@@ -5,6 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract Action {
 
+    address public immutable creator;
     IERC20 public immutable token;
     uint256 public immutable targetAmount;
     uint256 public immutable cutOfTime;
@@ -17,11 +18,13 @@ contract Action {
     mapping(address => uint256) contributors;
 
     constructor(
+        address _creator,
         address _token,
         uint256 _targetAmount,
         uint256 _cutOfTime,
         uint256 _optimisticLockDuration
     ) {
+        creator = _creator;
         token = IERC20(_token);
         targetAmount = _targetAmount;
         cutOfTime = _cutOfTime;
