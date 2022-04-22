@@ -11,9 +11,11 @@ contract CollectiveActions {
         address token,
         uint256 targetAmount,
         uint256 cutOfTime,
-        uint256 optimisticLockDuration
-    ) {
-        Action action = new Action(msg.sender, token, targetAmount, cutOfTime, optimisticLockDuration);
-        actions.push(action);
+        uint256 optimisticLockDuration,
+        bytes32 metadata,
+        bytes32 image
+    ) public {
+        Action action = new Action(msg.sender, token, targetAmount, cutOfTime, optimisticLockDuration, metadata, image);
+        actions.push(address(action));
     }
 }
