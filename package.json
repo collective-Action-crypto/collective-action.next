@@ -9,6 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@maticnetwork/maticjs": "^3.2.5",
+    "@maticnetwork/maticjs-web3": "^1.0.1",
+    "@toruslabs/openlogin": "^1.7.3",
+    "@web3auth/web3auth": "^0.9.3",
     "next": "12.1.5",
     "react": "18.0.0",
     "react-dom": "18.0.0"
