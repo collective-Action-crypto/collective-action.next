@@ -1,4 +1,4 @@
-import { Box, Button, Link } from '@chakra-ui/react';
+import { Box, Button, CircularProgress, Link } from '@chakra-ui/react';
 import React from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { handleLogin, handleLogout, initializeOpenlogin } from '../util/web3auth';
@@ -31,7 +31,7 @@ const Header = () => {
             <CreateBounty />
           </Link>
           {loading
-            ? 'LOADING'
+            ? <CircularProgress size='30px' isIndeterminate color='green.300' />
             : isUserLoggedIn
               ? <Button onClick={() => handleLogout(openlogin as object, setLoading, false)}>Logout</Button>
               : <Button onClick={() => handleLogin(openlogin as object, setLoading, level, setCurrentUser)}>Login</Button>
