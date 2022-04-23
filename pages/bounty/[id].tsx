@@ -130,7 +130,7 @@ const Bounty = () => {
             <Text fontWeight="500" fontSize="24px" lineHeight="28px" letterSpacing="0.01em">Submission</Text>
           </Box>
           <Box>
-            <SubmitClaim/>
+            <SubmitClaim id={id}/>
           </Box>
         </Box>
 

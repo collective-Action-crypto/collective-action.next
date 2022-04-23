@@ -24,8 +24,10 @@ import { callSmartContractFunction, pushToIPFS } from "../util/tatum";
 import Actions from "../artifacts/contracts/Actions.sol/Actions.json";
 import { AuthContext } from "../contexts/AuthContext";
 import { ethers } from "ethers";
+import { contract } from "../util/ethers";
 const STAKE_AMOUNT = "0.1";
-function SubmitClaim() {
+
+function SubmitClaim({ id }) {
   const currentUser = useContext(AuthContext);
   console.log("fnr", process.env.STAKE_AMOUNT);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -39,57 +41,21 @@ function SubmitClaim() {
     }
     return error;
   }
-  const createABI = {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_endDate",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "_stakeAmount",
-        type: "uint256",
-      },
-      {
-        internalType: "string",
-        name: "_image",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "_metadata",
-        type: "string",
-      },
-    ],
-    name: "createAction",
-    outputs: [],
-    stateMutability: "payable",
-    type: "function",
-  };
+
   const handleSubmit = async (values) => {
-    console.log('Submit Claim')
-    // const textCid = await pushToIPFS(
-    //   await createBlobFromObject({
-    //     title: values.title,
-    //     description: values.description,
-    //     requirements: values.requirements,
-    //   })
-    // );
-    // const imageCid = await pushToIPFS(await loadFile(image as string));
-    // callSmartContractFunction(
-    //   "createAction",
-    //   createABI,
-    //   //Actions.abi,
-    //   [
-    //     (date.getTime() / 1000).toString(),
-    //     ethers.utils.parseEther(STAKE_AMOUNT).toString(),
-    //     imageCid,
-    //     textCid,
-    //   ],
-    //   values.prizePoolSize,
-    //   (currentUser.currentUser as any).privateKey
-    // );
+    const imageCid = await pushToIPFS(await loadFile(image as string));
+    const action = await contract.actions(id);
+
+    callSmartContractFunction(
+      "submitProof",
+      Actions.abi,
+      [
+        id,
+        imageCid,
+      ],
+      action.stakeAmount.toString(),
+      (currentUser.currentUser as any).privateKey
+    );
   };
   const onImageChange = (event: any) => {
     if (event.target.files && event.target.files[0]) {
@@ -200,3 +166,4 @@ function SubmitClaim() {
 }
 
 export default SubmitClaim;
+
