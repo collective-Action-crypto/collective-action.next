@@ -1,3 +1,4 @@
+import { ipfsGet } from "@tatumio/tatum";
 import { ethers } from "ethers";
 import actionabi from "../artifacts/contracts/Actions.sol/Actions.json";
 import { Actions } from "../artifacts/contracts/types";
@@ -30,13 +31,16 @@ export async function getListOfActions() {
   while (true) {
     const tmp = await contract.actions(i);
     if (!tmp || (tmp[0] as any) == 0) break;
+    const metadata = await ipfsGet(tmp.metadata);
     const tmp2 = {
       creator: tmp.creator,
       endDate: tmp.endDate,
       disputePeriodEnd: tmp.disputePeriodEnd,
       stakeAmount: tmp.stakeAmount,
       image: tmp.image,
-      metadata: tmp.metadata,
+      title: metadata.title,
+      description: metadata.description,
+      requirements: metadata.requirements,
       amount: tmp.amount,
       settled: tmp.settled,
     };
