@@ -49,6 +49,5 @@ export async function getListOfActions() {
     i++;
   }
   console.log("hahahah", actions);
-
   return actions;
 }
