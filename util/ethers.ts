@@ -1,8 +1,9 @@
 import { BigNumber, ethers } from "ethers";
 import ActionABI from "../artifacts/contracts/Actions.sol/Actions.json";
-import { Actions } from "../artifacts/contracts/types";
+import CoActTokenABI from "../artifacts/contracts/CoActToken.sol/CoActToken.json";
+import { Actions, CoActToken } from "../artifacts/contracts/types";
 import { getFromIPFS } from "./tatum";
-import { ACTIONS_CONTRACT_ADDRESS } from "./constants";
+import { ACTIONS_CONTRACT_ADDRESS, TOKEN_CONTRACT_ADDRESS } from "./constants";
 
 /*async function deployContract(
   abi: string[],
@@ -22,13 +23,24 @@ const provider = new ethers.providers.AlchemyProvider(
   "TLPI2cNQ21vuiwGs2X1HaUJxt-ZwnOFx"
 );
 
+const contract = new ethers.Contract(
+  ACTIONS_CONTRACT_ADDRESS,
+  ActionABI.abi,
+  provider
+) as Actions;
+
+const tokenContract = new ethers.Contract(
+  TOKEN_CONTRACT_ADDRESS,
+  CoActTokenABI.abi,
+  provider
+) as CoActToken;
+
+export async function getTokenBalance(address: string) {
+  return await tokenContract.balanceOf(address);
+};
+
 export async function getListOfActions() {
-  console.log("prov", provider);
-  const contract = new ethers.Contract(
-    ACTIONS_CONTRACT_ADDRESS,
-    ActionABI.abi,
-    provider
-  ) as Actions;
+
   let actions = [] as object[];
   let i = 0;
   while (true) {
