@@ -37,7 +37,7 @@ const tokenContract = new ethers.Contract(
 
 export async function getTokenBalance(address: string) {
   return await tokenContract.balanceOf(address);
-};
+}
 
 export async function getListOfActions() {
 
@@ -68,14 +68,9 @@ export async function getListOfActions() {
 }
 
 export async function getListOfDisputes(address: string | undefined) {
-  const provider = new ethers.providers.AlchemyProvider(
-    "maticmum",
-    "TLPI2cNQ21vuiwGs2X1HaUJxt-ZwnOFx"
-  );
-  console.log("prov", provider);
   const contract = new ethers.Contract(
     "0xFf876C477C0F2BD05a23326AdC08720CaBaeAf91",
-    actionabi.abi,
+    ActionABI.abi,
     provider
   ) as Actions;
   let disputes = [] as object[];
@@ -91,7 +86,7 @@ export async function getListOfDisputes(address: string | undefined) {
       //const metadata = await getFromIPFS(tmp.metadata);
       const proof = await contract.proofs(action, tmp.proofIndex);
       const voted = address
-        ? await contract.votes(action, dispute, address)
+        ? await contract.hasVoted(action, dispute, address)
         : false;
       disputes.push({
         action: action,
@@ -112,12 +107,14 @@ export async function getListOfDisputes(address: string | undefined) {
   console.log("hahahah", disputes);
   return disputes;
 }
+
 export const getAction = async (id: BigNumber) => {
   const contract = new ethers.Contract(ACTIONS_CONTRACT_ADDRESS, ActionABI.abi, provider) as Actions;
   const action = await contract.actions(id);
 
   return {
     creator: action.creator,
+    creationDate: action.creationDate,
     endDate: action.endDate,
     disputePeriodEnd: action.disputePeriodEnd,
     stakeAmount: action.stakeAmount,
@@ -127,4 +124,16 @@ export const getAction = async (id: BigNumber) => {
     eligibleSubmittersCount: action.eligibleSubmittersCount,
     settled: action.settled
   }
+}
+
+export const getSubmissions = async (actionId: BigNumber) => {
+  const contract = new ethers.Contract(ACTIONS_CONTRACT_ADDRESS, ActionABI.abi, provider) as Actions;
+  const submissions = await contract.getProofs(actionId);
+  return submissions.map(it => {
+    return {
+      submitter: it.submitter,
+      proof: it.proof,
+      failed: it.failed
+    }
+  })
 }
