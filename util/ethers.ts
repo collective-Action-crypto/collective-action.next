@@ -23,13 +23,13 @@ const provider = new ethers.providers.AlchemyProvider(
   "TLPI2cNQ21vuiwGs2X1HaUJxt-ZwnOFx"
 );
 
-const contract = new ethers.Contract(
+export const contract = new ethers.Contract(
   ACTIONS_CONTRACT_ADDRESS,
   ActionABI.abi,
   provider
 ) as Actions;
 
-const tokenContract = new ethers.Contract(
+export const tokenContract = new ethers.Contract(
   TOKEN_CONTRACT_ADDRESS,
   CoActTokenABI.abi,
   provider

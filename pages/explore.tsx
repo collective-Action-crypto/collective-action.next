@@ -17,12 +17,14 @@ import { action } from "../util/helper";
 const Explore: NextPage = () => {
   const [loading, setLoading] = useState(true);
   const [actions, setActions] = useState(undefined as action[] | undefined);
+
   useEffect(() => {
     getListOfActions().then((actions) => {
       setActions(actions as action[]);
       setLoading(false);
     });
   }, []);
+
   if (!loading) {
     return (
       <>
