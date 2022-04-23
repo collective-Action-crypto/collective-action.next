@@ -17,6 +17,7 @@ contract Actions {
         string metadata;
 
         uint256 amount;
+        uint256 eligibleSubmittersCount;
         bool settled;
     }
 
@@ -68,6 +69,7 @@ contract Actions {
         action.image = _image;
         action.metadata = _metadata;
         action.amount = msg.value;
+        action.eligibleSubmittersCount = 0;
         actions[actionIndex] = action;
         actionIndex++;
     }
@@ -80,9 +82,10 @@ contract Actions {
     }
 
     function submitProof(uint256 actionId, string memory proof) public payable {
-        Action memory action = actions[actionId];
+        Action storage action = actions[actionId];
         require(action.endDate < block.timestamp, "Can't submit a proof proof after end date");
         require(msg.value == action.stakeAmount, "Can't add a proof as stake amount is not valid");
+        action.eligibleSubmittersCount++;
         // todo: not allow to submit proofs multiple times
 
         Proof memory newProof;
@@ -131,9 +134,21 @@ contract Actions {
             }
 
             if (!ongoing && block.timestamp > a.disputePeriodEnd) {// no ongoing disputes and dispute period ended settle action
-                // todo: settle action
+                settleAction(i);
             }
         }
+    }
+
+    function settleAction(uint256 actionId) private {
+        Action memory action = actions[actionId];
+        Proof[] memory actionProofs = proofs[actionId];
+        uint256 amountToPay = action.amount / action.eligibleSubmittersCount + action.stakeAmount;
+        for (uint256 i = 0; i < actionProofs.length; i++) {
+            if (!actionProofs[i].failed) {
+                payable(actionProofs[i].submitter).transfer(amountToPay);
+            }
+        }
+        actions[actionId].settled = true;
     }
 
     function settleDisputes(uint256 actionId) private {
@@ -150,6 +165,7 @@ contract Actions {
         if (dispute.forVotes > dispute.againstVotes) {// challenger wins
             Proof storage proof = proofs[actionId][dispute.proofIndex];
             proof.failed = true;
+            actions[actionId].eligibleSubmittersCount--;
 
             payable(dispute.creator).transfer(2 * actions[actionId].stakeAmount);
         } else {// proof submitter wins, challenger money stay with us
