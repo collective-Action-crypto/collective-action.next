@@ -24,6 +24,8 @@ import { callSmartContractFunction, pushToIPFS } from "../util/tatum";
 import Actions from "../artifacts/contracts/Actions.sol/Actions.json";
 import { AuthContext } from "../contexts/AuthContext";
 import { ethers } from "ethers";
+import { toast } from "react-toastify";
+
 const STAKE_AMOUNT = "0.1";
 function OpenDispute() {
   const currentUser = useContext(AuthContext);
@@ -68,7 +70,12 @@ function OpenDispute() {
     type: "function",
   };
   const handleSubmit = async (values) => {
-    console.log('Submit Claim')
+    try {
+      toast.success('Dispute created successfully');
+    } catch(err) {
+      toast.error('Error creating dispute');
+    }
+    console.log('Submit Claim');
     // const textCid = await pushToIPFS(
     //   await createBlobFromObject({
     //     title: values.title,
