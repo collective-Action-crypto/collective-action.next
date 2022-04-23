@@ -68,7 +68,7 @@ const Dispute: NextPage = () => {
                 lineHeight="28px"
                 letterSpacing="0.01em"
               >
-                Dispute Votes (28 active)
+                Dispute Votes ({disputes ? disputes.length : 0} active)
               </Text>
             </Box>
           </Box>
