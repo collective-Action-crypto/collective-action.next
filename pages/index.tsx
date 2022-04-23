@@ -12,29 +12,6 @@ const Home: NextPage = () => {
       </Head>
 
       <Header />
-
-      {/* {
-      loading ?
-        <div>
-            <div style={{ display: "flex", flexDirection: "column", width: "100%", justifyContent: "center", alignItems: "center", margin: 20 }}>
-                <h1>....loading</h1>
-            </div>
-        </div> : <div>
-        {
-          (openlogin && (openlogin as any).privKey) ?
-          <div>
-            <span>Connected to : { level === "l1" ? "Goerli Network":  "Mumbai Matic testnet"} </span> 
-          </div>
-          :
-            <div className="loginContainer">
-                <h1 style={{ textAlign: "center" }}>Openlogin x Polygon</h1>
-                <div onClick={()=>handleLogin(openlogin as object, setLoading, level, setCurrentUser)} className="btn">
-                  Login
-                </div>
-            </div>
-        }
-        </div>
-      } */}
     </div>
   )
 }
