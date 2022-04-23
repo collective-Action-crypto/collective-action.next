@@ -44,7 +44,7 @@ export async function getListOfActions() {
       amount: tmp.amount,
       settled: tmp.settled,
     };
-    actions.push(tmp);
+    actions.push(tmp2);
     console.log("mmh", tmp);
     i++;
   }
