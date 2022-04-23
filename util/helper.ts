@@ -27,6 +27,7 @@ export interface action {
   requirements: string;
   amount: number;
   settled: boolean;
+  participants: number;
 }
 export interface dispute {
   action: number;

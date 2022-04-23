@@ -1,4 +1,3 @@
-import { CircularProgress } from "@chakra-ui/react";
 import {
   Box,
   Heading,
@@ -56,13 +55,12 @@ const Explore: NextPage = () => {
                           <Card
                             title={action.title}
                             description={action.description}
-                            profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
-                            profile_name={action.creator}
-                            type={"Charity"}
-                            current_value_in_usd={10000}
-                            total_value_in_usd={15000}
+                            imageUrl={action.image}
+                            walletAddress={action.creator}
                             key={index}
                             id={index}
+                            participantsCount={action.participants}
+                            daysLeft={Math.floor((action.endDate - new Date().getTime() / 1000) / 24 / 3600)}
                           />
                         );
                       })
@@ -73,20 +71,19 @@ const Explore: NextPage = () => {
                 {actions
                   ? actions
                       .filter(
-                        (action) => new Date(action.endDate) >= new Date()
+                        (action) => new Date(action.endDate * 1000) >= new Date()
                       )
                       .map((action, index) => {
                         return (
                           <Card
                             title={action.title}
                             description={action.description}
-                            profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
-                            profile_name={action.creator}
-                            type={"Charity"}
-                            current_value_in_usd={10000}
-                            total_value_in_usd={15000}
+                            imageUrl={action.image}
+                            walletAddress={action.creator}
                             key={index}
                             id={index}
+                            participantsCount={action.participants}
+                            daysLeft={Math.floor((action.endDate - new Date().getTime() / 1000) / 24 / 3600)}
                           />
                         );
                       })
@@ -97,7 +94,7 @@ const Explore: NextPage = () => {
                   ? actions
                       .filter(
                         (action) =>
-                          new Date(action.endDate) < new Date() &&
+                          new Date(action.endDate * 1000) < new Date() &&
                           !action.settled
                       )
                       .map((action, index) => {
@@ -105,13 +102,12 @@ const Explore: NextPage = () => {
                           <Card
                             title={action.title}
                             description={action.description}
-                            profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
-                            profile_name={action.creator}
-                            type={"Charity"}
-                            current_value_in_usd={10000}
-                            total_value_in_usd={15000}
+                            imageUrl={action.image}
+                            walletAddress={action.creator}
                             key={index}
                             id={index}
+                            participantsCount={action.participants}
+                            daysLeft={Math.floor((action.endDate - new Date().getTime() / 1000) / 24 / 3600)}
                           />
                         );
                       })
@@ -122,7 +118,7 @@ const Explore: NextPage = () => {
                   ? actions
                       .filter(
                         (action) =>
-                          new Date(action.endDate) < new Date() &&
+                          new Date(action.endDate * 1000) < new Date() &&
                           action.settled
                       )
                       .map((action, index) => {
@@ -130,13 +126,12 @@ const Explore: NextPage = () => {
                           <Card
                             title={action.title}
                             description={action.description}
-                            profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
-                            profile_name={action.creator}
-                            type={"Charity"}
-                            current_value_in_usd={10000}
-                            total_value_in_usd={15000}
+                            imageUrl={action.image}
+                            walletAddress={action.creator}
                             key={index}
                             id={index}
+                            participantsCount={action.participants}
+                            daysLeft={Math.floor((action.endDate - new Date().getTime() / 1000) / 24 / 3600)}
                           />
                         );
                       })

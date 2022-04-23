@@ -45,7 +45,7 @@ contract Actions {
 
     address governanceToken;
 
-    uint256 actionIndex = 0;
+    uint256 public actionIndex = 0;
     mapping(uint256 => Action) public actions;
 
     mapping(uint256 => Proof[]) public proofs;
