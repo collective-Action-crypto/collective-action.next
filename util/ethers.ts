@@ -1,7 +1,9 @@
-import { ethers } from "ethers";
-import actionabi from "../artifacts/contracts/Actions.sol/Actions.json";
+import { BigNumber, ethers } from "ethers";
+import ActionABI from "../artifacts/contracts/Actions.sol/Actions.json";
 import { Actions } from "../artifacts/contracts/types";
 import { getFromIPFS } from "./tatum";
+import { ACTIONS_CONTRACT_ADDRESS } from "./constants";
+
 /*async function deployContract(
   abi: string[],
   bytecode: string,
@@ -15,15 +17,16 @@ import { getFromIPFS } from "./tatum";
   let contract=await factory.deploy("")
 }*/
 
+const provider = new ethers.providers.AlchemyProvider(
+  "maticmum",
+  "TLPI2cNQ21vuiwGs2X1HaUJxt-ZwnOFx"
+);
+
 export async function getListOfActions() {
-  const provider = new ethers.providers.AlchemyProvider(
-    "maticmum",
-    "TLPI2cNQ21vuiwGs2X1HaUJxt-ZwnOFx"
-  );
   console.log("prov", provider);
   const contract = new ethers.Contract(
-    "0xFf876C477C0F2BD05a23326AdC08720CaBaeAf91",
-    actionabi.abi,
+    ACTIONS_CONTRACT_ADDRESS,
+    ActionABI.abi,
     provider
   ) as Actions;
   let actions = [] as object[];
@@ -50,4 +53,21 @@ export async function getListOfActions() {
   }
   console.log("hahahah", actions);
   return actions;
+}
+
+export const getAction = async (id: BigNumber) => {
+  const contract = new ethers.Contract(ACTIONS_CONTRACT_ADDRESS, ActionABI.abi, provider) as Actions;
+  const action = await contract.actions(id);
+
+  return {
+    creator: action.creator,
+    endDate: action.endDate,
+    disputePeriodEnd: action.disputePeriodEnd,
+    stakeAmount: action.stakeAmount,
+    image: action.image,
+    metadata: action.metadata,
+    amount: action.amount,
+    eligibleSubmittersCount: action.eligibleSubmittersCount,
+    settled: action.settled
+  }
 }
