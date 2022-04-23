@@ -48,18 +48,23 @@ const Explore: NextPage = () => {
                   mr="auto"
                   py="20px"
                 >
-                  {actions &&
-                    actions.forEach((action) => (
-                      <Card
-                        title={action.title}
-                        description={action.description}
-                        profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
-                        profile_name={action.creator}
-                        type={"Charity"}
-                        current_value_in_usd={10000}
-                        total_value_in_usd={15000}
-                      />
-                    ))}
+                  {actions
+                    ? actions.map((action, index) => {
+                        return (
+                          <Card
+                            title={action.title}
+                            description={action.description}
+                            profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
+                            profile_name={action.creator}
+                            type={"Charity"}
+                            current_value_in_usd={10000}
+                            total_value_in_usd={15000}
+                            key={index}
+                            id={index}
+                          />
+                        );
+                      })
+                    : null}
                 </Box>
               </TabPanel>
               <TabPanel>

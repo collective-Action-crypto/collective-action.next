@@ -1,7 +1,7 @@
-import { ipfsGet } from "@tatumio/tatum";
 import { ethers } from "ethers";
 import actionabi from "../artifacts/contracts/Actions.sol/Actions.json";
 import { Actions } from "../artifacts/contracts/types";
+import { getFromIPFS } from "./tatum";
 /*async function deployContract(
   abi: string[],
   bytecode: string,
@@ -31,7 +31,7 @@ export async function getListOfActions() {
   while (true) {
     const tmp = await contract.actions(i);
     if (!tmp || (tmp[0] as any) == 0) break;
-    const metadata = await ipfsGet(tmp.metadata);
+    const metadata = await getFromIPFS(tmp.metadata);
     const tmp2 = {
       creator: tmp.creator,
       endDate: tmp.endDate,
