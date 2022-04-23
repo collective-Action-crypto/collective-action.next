@@ -3,6 +3,7 @@ import React from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { handleLogin, handleLogout, initializeOpenlogin } from '../util/web3auth';
 import { AuthContext } from '../contexts/AuthContext';
+import CreateBounty from './CreateBounty';
 
 
 const Header = () => {
@@ -26,7 +27,9 @@ const Header = () => {
         </Box>
         <Box flex={1} display="flex" borderWidth="1px">
           <Link mr="30px">Explore</Link>
-          <Link mr="30px">Create</Link>
+          <Link mr="30px">
+            <CreateBounty />
+          </Link>
           {loading
             ? 'LOADING'
             : isUserLoggedIn
