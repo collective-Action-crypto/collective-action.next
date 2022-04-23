@@ -141,15 +141,19 @@ contract Actions {
         for (uint256 i = 0; i < actionDisputes.length; i++) {
             Dispute storage current = actionDisputes[i];
             if (current.disputeEndDate > block.timestamp && !current.settled) {
-                if (current.forVotes > current.againstVotes) {// challenger wins
-                    Proof storage proof = proofs[actionId][current.proofIndex];
-                    proof.failed = true;
-
-                    payable(current.creator).transfer(2 * actions[actionId].stakeAmount);
-                } else {// proof submitter wins, challenger money stay with us
-                    current.settled = true;
-                }
+                settleDispute(current, actionId);
             }
+        }
+    }
+
+    function settleDispute(Dispute storage dispute, uint256 actionId) private {
+        if (dispute.forVotes > dispute.againstVotes) {// challenger wins
+            Proof storage proof = proofs[actionId][dispute.proofIndex];
+            proof.failed = true;
+
+            payable(dispute.creator).transfer(2 * actions[actionId].stakeAmount);
+        } else {// proof submitter wins, challenger money stay with us
+            dispute.settled = true;
         }
     }
 
