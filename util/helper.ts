@@ -15,3 +15,16 @@ export async function loadFile(uri: string) {
     xhr.send(null);
   })) as Blob;
 }
+
+export interface action {
+  creator: string;
+  endDate: number;
+  disputePeriodEnd: number;
+  stakeAmount: number;
+  image: string;
+  title: string;
+  description: string;
+  requirements: string;
+  amount: number;
+  settled: boolean;
+}

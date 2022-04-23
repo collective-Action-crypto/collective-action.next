@@ -13,13 +13,14 @@ import { NextPage } from "next";
 import React, { useEffect, useState } from "react";
 import Card from "../components/Card";
 import { getListOfActions } from "../util/ethers";
+import { action } from "../util/helper";
 
 const Explore: NextPage = () => {
   const [loading, setLoading] = useState(true);
-  const [actions, setActions] = useState(undefined as object | undefined);
+  const [actions, setActions] = useState(undefined as action[] | undefined);
   useEffect(() => {
     getListOfActions().then((actions) => {
-      setActions(actions);
+      setActions(actions as action[]);
       setLoading(false);
     });
   }, []);
@@ -41,87 +42,27 @@ const Explore: NextPage = () => {
             </TabList>
             <TabPanels>
               <TabPanel>
-                <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent={'space-evenly'} width="1400px" ml="auto" mr="auto" py="20px">
-                  <Card
-                    id={1}
-                    title={"Title Testing"}
-                    description={"Description Testing foaijsd foaisdj aoisj fasoijf asoidjf aosijf aosidjf aoisj aiofsdj oaisdj aoijfawoijf f"}
-                    profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
-                    profile_name="Andrew Test"
-                    type={"Charity"}
-                    current_value_in_usd={10000}
-                    total_value_in_usd={15000}
-                  />
-                  <Card
-                    id={2}
-                    title={"Title Testing"}
-                    description={"Description Testing foaijsd foaisdj aoisj fasoijf asoidjf aosijf aosidjf aoisj aiofsdj oaisdj aoijfawoijf f"}
-                    profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
-                    profile_name="Andrew Test"
-                    type={"Charity"}
-                    current_value_in_usd={10000}
-                    total_value_in_usd={15000}
-                  />
-                  <Card
-                    id={3}
-                    title={"Title Testing"}
-                    description={"Description Testing foaijsd foaisdj aoisj fasoijf asoidjf aosijf aosidjf aoisj aiofsdj oaisdj aoijfawoijf f"}
-                    profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
-                    profile_name="Andrew Test"
-                    type={"Charity"}
-                    current_value_in_usd={10000}
-                    total_value_in_usd={15000}
-                  />
-                  <Card
-                    id={4}
-                    title={"Title Testing"}
-                    description={"Description Testing foaijsd foaisdj aoisj fasoijf asoidjf aosijf aosidjf aoisj aiofsdj oaisdj aoijfawoijf f"}
-                    profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
-                    profile_name="Andrew Test"
-                    type={"Charity"}
-                    current_value_in_usd={10000}
-                    total_value_in_usd={15000}
-                  />
-                  <Card
-                    id={5}
-                    title={"Title Testing"}
-                    description={"Description Testing foaijsd foaisdj aoisj fasoijf asoidjf aosijf aosidjf aoisj aiofsdj oaisdj aoijfawoijf f"}
-                    profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
-                    profile_name="Andrew Test"
-                    type={"Charity"}
-                    current_value_in_usd={10000}
-                    total_value_in_usd={15000}
-                  />
-                  <Card
-                    id={6}
-                    title={"Title Testing"}
-                    description={"Description Testing foaijsd foaisdj aoisj fasoijf asoidjf aosijf aosidjf aoisj aiofsdj oaisdj aoijfawoijf f"}
-                    profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
-                    profile_name="Andrew Test"
-                    type={"Charity"}
-                    current_value_in_usd={10000}
-                    total_value_in_usd={15000}
-                  />
-                  <Card
-                    id={7}
-                    title={"Title Testing"}
-                    description={"Description Testing foaijsd foaisdj aoisj fasoijf asoidjf aosijf aosidjf aoisj aiofsdj oaisdj aoijfawoijf f"}
-                    profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
-                    profile_name="Andrew Test"
-                    type={"Charity"}
-                    current_value_in_usd={10000}
-                    total_value_in_usd={15000}
-                  />
-                  <Card
-                    id={8}
-                    title={"Title Testing"}
-                    description={"Description Testing foaijsd foaisdj aoisj fasoijf asoidjf aosijf aosidjf aoisj aiofsdj oaisdj aoijfawoijf f"}
-                    profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
-                    profile_name="Andrew Test"
-                    type={"Charity"}
-                    current_value_in_usd={10000}
-                    total_value_in_usd={15000}
-                  />
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  justifyContent={"space-evenly"}
+                  width="1400px"
+                  ml="auto"
+                  mr="auto"
+                  py="20px"
+                >
+                  {actions &&
+                    actions.forEach((action) => (
+                      <Card
+                        title={action.title}
+                        description={action.description}
+                        profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
+                        profile_name={action.creator}
+                        type={"Charity"}
+                        current_value_in_usd={10000}
+                        total_value_in_usd={15000}
+                      />
+                    ))}
                 </Box>
               </TabPanel>
               <TabPanel>
