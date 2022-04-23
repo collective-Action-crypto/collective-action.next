@@ -33,7 +33,8 @@ export async function pushToIPFS(file: string | Blob) {
       "x-api-key": API_KEY,
     },
   });
-  return resp.data.IpfsHash;
+  console.log("infr", resp.data);
+  return resp.data.ipfsHash as string;
 }
 export async function getFromIPFS(cid: string) {
   const url = `https://api-eu1.tatum.io/v3/ipfs/${cid}`;
