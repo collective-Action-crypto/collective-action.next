@@ -22,6 +22,7 @@ export async function callSmartContractFunction( //would also call withdraw func
   console.log(resp.data.txId);
   return resp.data.IpfsHash;
 }
+
 export async function pushToIPFS(file: string | Blob) {
   //https://blog.tatum.io/tatum-partners-with-nft-storage-to-offer-free-ipfs-storage-for-nfts-to-developers-183dad64e79d
   const url = `https://api-eu1.tatum.io/v3/ipfs`;
@@ -33,7 +34,8 @@ export async function pushToIPFS(file: string | Blob) {
       "x-api-key": API_KEY,
     },
   });
-  return resp.data.IpfsHash;
+  console.log("infr", resp.data);
+  return resp.data.ipfsHash as string;
 }
 export async function getFromIPFS(cid: string) {
   const url = `https://api-eu1.tatum.io/v3/ipfs/${cid}`;
