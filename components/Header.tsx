@@ -1,4 +1,3 @@
-import React from "react";
 import { useContext, useEffect, useState } from "react";
 import {
   handleLogin,
@@ -7,6 +6,7 @@ import {
 } from "../util/web3auth";
 import { AuthContext } from "../contexts/AuthContext";
 import CreateBounty from "./CreateBounty";
+import React from "react";
 import { Box, Button, CircularProgress, Link } from '@chakra-ui/react';
 import Logo from "../assets/icons/Logo";
 import { useRouter } from "next/router";
