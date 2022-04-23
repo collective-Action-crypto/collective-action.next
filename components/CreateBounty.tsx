@@ -9,6 +9,7 @@ import {
   Button,
   useDisclosure,
   Input,
+  Text
 } from "@chakra-ui/react";
 
 import {
@@ -53,7 +54,7 @@ function CreateBounty() {
   };
   return (
     <>
-      <Button onClick={onOpen}>Create</Button>
+      <Button borderRadius="16px" mr="24px" fontSize="14px" lineHeight="17px" width="110px" variant="ghost" textAlign="center" onClick={onOpen}>Create</Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
