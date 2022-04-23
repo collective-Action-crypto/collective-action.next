@@ -28,3 +28,14 @@ export interface action {
   amount: number;
   settled: boolean;
 }
+export interface dispute {
+  action: number;
+  creator: string;
+  forProof: string;
+  againstVotes: number;
+  alreadyVoted: boolean;
+  forVotes: number;
+  disputeEndDate: number;
+  settled: boolean;
+  disputeProof: string;
+}

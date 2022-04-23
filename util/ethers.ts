@@ -51,3 +51,49 @@ export async function getListOfActions() {
   console.log("hahahah", actions);
   return actions;
 }
+
+export async function getListOfDisputes(address: string | undefined) {
+  const provider = new ethers.providers.AlchemyProvider(
+    "maticmum",
+    "TLPI2cNQ21vuiwGs2X1HaUJxt-ZwnOFx"
+  );
+  console.log("prov", provider);
+  const contract = new ethers.Contract(
+    "0xFf876C477C0F2BD05a23326AdC08720CaBaeAf91",
+    actionabi.abi,
+    provider
+  ) as Actions;
+  let disputes = [] as object[];
+  let action = 0;
+
+  while (true) {
+    let dispute = 0;
+    const tmp = await contract.disputes(action, dispute);
+    if (!tmp || (tmp[0] as any) == 0) break;
+    while (true) {
+      const tmp = await contract.disputes(action, dispute);
+      if (!tmp || (tmp[0] as any) == 0) break;
+      //const metadata = await getFromIPFS(tmp.metadata);
+      const proof = await contract.proofs(action, tmp.proofIndex);
+      const voted = address
+        ? await contract.votes(action, dispute, address)
+        : false;
+      disputes.push({
+        action: action,
+        creator: tmp.creator,
+        forProof: proof.proof,
+        againstVotes: tmp.againstVotes,
+        alreadyVoted: voted,
+        forVotes: tmp.forVotes,
+        disputeEndDate: tmp.disputeEndDate,
+        settled: tmp.settled,
+        disputeProof: tmp.disputeProof,
+      });
+      console.log("mmh", tmp);
+      dispute++;
+    }
+    action++;
+  }
+  console.log("hahahah", disputes);
+  return disputes;
+}
