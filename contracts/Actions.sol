@@ -50,7 +50,7 @@ contract Actions {
 
     mapping(uint256 => Proof[]) public proofs;
     mapping(uint256 => Dispute[]) public disputes;
-    mapping(uint256 => mapping(uint256 => Votes)) votes;
+    mapping(uint256 => mapping(uint256 => Votes)) public votes;
 
     constructor(address _governanceToken) {
         governanceToken = _governanceToken;
