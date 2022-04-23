@@ -7,11 +7,10 @@ contract Action {
 
     address public immutable creator;
     IERC20 public immutable token;
-    uint256 public immutable targetAmount;
-    uint256 public immutable cutOfTime;
-    uint256 public immutable optimisticLockDuration;
-    bytes32 public immutable metadata;
+    uint256 public immutable endDate;
+    uint256 public immutable disputePeriod;
     bytes32 public immutable image;
+    bytes32 public immutable metadata;
 
     uint256 public raisedAmount = 0;
 
@@ -20,29 +19,23 @@ contract Action {
     constructor(
         address _creator,
         address _token,
-        uint256 _targetAmount,
-        uint256 _cutOfTime,
-        uint256 _optimisticLockDuration,
-        bytes32 _metadata,
-        bytes32 _image
+        uint256 _endDate,
+        uint256 _disputePeriod,
+        bytes32 _image,
+        bytes32 _metadata
     ) {
         creator = _creator;
         token = IERC20(_token);
-        targetAmount = _targetAmount;
-        cutOfTime = _cutOfTime;
-        optimisticLockDuration = _optimisticLockDuration;
-        metadata = _metadata;
+        endDate = _endDate;
+        disputePeriod = _disputePeriod;
         image = _image;
+        metadata = _metadata;
     }
 
     function contribute(uint256 amount) public {
-        require(cutOfTime == 0 || block.timestamp <= cutOfTime, "Contributions after cut-off time are not allowed");
-
-        uint256 newAmount = raisedAmount + amount;
-        require(targetAmount == 0 || newAmount <= targetAmount, "Contributions after target amount reached are not allowed");
-
+        require(block.timestamp <= endDate, "Contributions after end date are not allowed");
         contributors[msg.sender] += amount;
-        raisedAmount = newAmount;
+        raisedAmount += amount;
         token.transferFrom(msg.sender, address(this), amount);
     }
 }
