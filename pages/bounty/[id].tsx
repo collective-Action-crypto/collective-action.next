@@ -15,13 +15,15 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import Header from '../../components/Header';
+import OpenDispute from '../../components/OpenDispute';
+import Participate from '../../components/Participate';
+import SubmitClaim from '../../components/SubmitClaim';
 import colors from '../../theme/colors';
 import { truncateWallet } from '../../util/truncateWallet';
 
 const Bounty = ({ id }) => {
   return (
     <>
-      <Header />
       <Box borderWidth="1px" borderColor={colors.neutral_100} p="32px" display="flex" borderRadius="24px" width="1288px" mt="56px" ml="auto" mr="auto">
         <Box flex={1} width="585px" height="500px" borderRadius="8px" my="36px" mr="54px" overflow="hidden">
           <Image src={'https://www.penthousepantherclub.com/pharaoh_small.png'} width="585px" height="500px"  alt='' />
@@ -60,9 +62,7 @@ const Bounty = ({ id }) => {
           </Box>
           <Box mt="24px" display="flex" justifyContent="space-between">
             <Box>
-              <Button fontWeight="500" fontSize="14px" lineHeight="17px" borderRadius="16px" colorScheme='green' mr={3} onClick={() => console.log("Participate in Bounty")}>
-                Participate in Bounty
-              </Button>
+              <Participate />
             </Box>
             <Box mt="5px">
               <Text color={colors.neutral_500} fontWeight="400" fontSize="14px" lineHeight="17px">567+ Participants</Text>
@@ -83,9 +83,7 @@ const Bounty = ({ id }) => {
             <Text fontWeight="500" fontSize="24px" lineHeight="28px" letterSpacing="0.01em">Submission</Text>
           </Box>
           <Box>
-            <Button fontWeight="500" fontSize="14px" lineHeight="17px" borderRadius="16px" colorScheme='green' mr={3} onClick={() => console.log("Submit Claim")}>
-              Submit Claim
-            </Button>
+            <SubmitClaim />
           </Box>
         </Box>
 
@@ -103,21 +101,21 @@ const Bounty = ({ id }) => {
                 <Td fontWeight="400" fontSize="14px" lineHeight="17px">{truncateWallet('0x24A2d17147F177F5a5d3e50C7717eC58Ccf44dE5', 15)}</Td>
                 <Td color={'#598CF4'}><Link>{`https://www.google.com/`}</Link></Td>
                 <Td isNumeric>
-                  <Button fontWeight="500" fontSize="14px" lineHeight="17px" borderRadius="16px"  variant='ghost'onClick={() => console.log('Open Dispute')}>Open Dispute</Button>
+                  <OpenDispute />
                 </Td>
               </Tr>
               <Tr>
                 <Td fontWeight="400" fontSize="14px" lineHeight="17px">{truncateWallet('0x24A2d17147F177F5a5d3e50C7717eC58Ccf44dE5', 15)}</Td>
                 <Td color={'#598CF4'}><Link>{`https://www.google.com/`}</Link></Td>
                 <Td isNumeric>
-                  <Button fontWeight="500" fontSize="14px" lineHeight="17px" borderRadius="16px" variant='ghost'onClick={() => console.log('Open Dispute')}>Open Dispute</Button>
+                  <OpenDispute />
                 </Td>
               </Tr>
               <Tr>
                 <Td fontWeight="400" fontSize="14px" lineHeight="17px">{truncateWallet('0x24A2d17147F177F5a5d3e50C7717eC58Ccf44dE5', 15)}</Td>
                 <Td color={'#598CF4'}><Link>{`https://www.google.com/`}</Link></Td>
                 <Td isNumeric>
-                  <Button fontWeight="500" fontSize="14px" lineHeight="17px" borderRadius="16px"  variant='ghost'onClick={() => console.log('Open Dispute')}>Open Dispute</Button>
+                  <OpenDispute />
                 </Td>
               </Tr>
             </Tbody>

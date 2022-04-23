@@ -36,11 +36,6 @@ const Explore: NextPage = () => {
           <Box mt="10px">
             <Text fontWeight="500" fontSize="24px" lineHeight="28px" letterSpacing="0.01em">Dispute Votes (28 active)</Text>
           </Box>
-          {/* <Box>
-            <Button fontWeight="500" fontSize="14px" lineHeight="17px" borderRadius="16px" colorScheme='green' mr={3} onClick={() => console.log("Submit Claim")}>
-              Submit Claim
-            </Button>
-          </Box> */}
         </Box>
 
         <TableContainer>
