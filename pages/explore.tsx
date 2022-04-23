@@ -21,8 +21,9 @@ const Explore: NextPage = () => {
           </TabList>
           <TabPanels>
             <TabPanel>
-              <Box display="flex" flexDirection="row" justifyContent={'space-evenly'} width="1400px" ml="auto" mr="auto" py="20px">
+              <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent={'space-evenly'} width="1400px" ml="auto" mr="auto" py="20px">
                 <Card
+                  id={1}
                   title={"Title Testing"}
                   description={"Description Testing foaijsd foaisdj aoisj fasoijf asoidjf aosijf aosidjf aoisj aiofsdj oaisdj aoijfawoijf f"}
                   profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
@@ -32,6 +33,7 @@ const Explore: NextPage = () => {
                   total_value_in_usd={15000}
                 />
                 <Card
+                  id={2}
                   title={"Title Testing"}
                   description={"Description Testing foaijsd foaisdj aoisj fasoijf asoidjf aosijf aosidjf aoisj aiofsdj oaisdj aoijfawoijf f"}
                   profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
@@ -41,6 +43,7 @@ const Explore: NextPage = () => {
                   total_value_in_usd={15000}
                 />
                 <Card
+                  id={3}
                   title={"Title Testing"}
                   description={"Description Testing foaijsd foaisdj aoisj fasoijf asoidjf aosijf aosidjf aoisj aiofsdj oaisdj aoijfawoijf f"}
                   profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
@@ -50,6 +53,47 @@ const Explore: NextPage = () => {
                   total_value_in_usd={15000}
                 />
                 <Card
+                  id={4}
+                  title={"Title Testing"}
+                  description={"Description Testing foaijsd foaisdj aoisj fasoijf asoidjf aosijf aosidjf aoisj aiofsdj oaisdj aoijfawoijf f"}
+                  profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
+                  profile_name="Andrew Test"
+                  type={"Charity"}
+                  current_value_in_usd={10000}
+                  total_value_in_usd={15000}
+                />
+                <Card
+                  id={5}
+                  title={"Title Testing"}
+                  description={"Description Testing foaijsd foaisdj aoisj fasoijf asoidjf aosijf aosidjf aoisj aiofsdj oaisdj aoijfawoijf f"}
+                  profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
+                  profile_name="Andrew Test"
+                  type={"Charity"}
+                  current_value_in_usd={10000}
+                  total_value_in_usd={15000}
+                />
+                <Card
+                  id={6}
+                  title={"Title Testing"}
+                  description={"Description Testing foaijsd foaisdj aoisj fasoijf asoidjf aosijf aosidjf aoisj aiofsdj oaisdj aoijfawoijf f"}
+                  profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
+                  profile_name="Andrew Test"
+                  type={"Charity"}
+                  current_value_in_usd={10000}
+                  total_value_in_usd={15000}
+                />
+                <Card
+                  id={7}
+                  title={"Title Testing"}
+                  description={"Description Testing foaijsd foaisdj aoisj fasoijf asoidjf aosijf aosidjf aoisj aiofsdj oaisdj aoijfawoijf f"}
+                  profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
+                  profile_name="Andrew Test"
+                  type={"Charity"}
+                  current_value_in_usd={10000}
+                  total_value_in_usd={15000}
+                />
+                <Card
+                  id={8}
                   title={"Title Testing"}
                   description={"Description Testing foaijsd foaisdj aoisj fasoijf asoidjf aosijf aosidjf aoisj aiofsdj oaisdj aoijfawoijf f"}
                   profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
