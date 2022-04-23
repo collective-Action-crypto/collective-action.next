@@ -8,7 +8,6 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import { sendMarketplaceApproveErc20Spending } from "@tatumio/tatum";
 import { NextPage } from "next";
 import React, { useEffect, useState } from "react";
 import Card from "../components/Card";
@@ -27,13 +26,11 @@ const Explore: NextPage = () => {
   if (!loading) {
     return (
       <>
-        <Box as='h1' textAlign={'center'} mt="30px">
-          <Heading>
-            Explore
-          </Heading>
+        <Box as="h1" textAlign={"center"} mt="30px">
+          <Heading>Explore</Heading>
         </Box>
         <Box textAlign="center" ml="auto" mr="auto" mt="40px">
-          <Tabs variant='soft-rounded' colorScheme='green'>
+          <Tabs variant="soft-rounded" colorScheme="green">
             <TabList display="flex" justifyContent="center">
               <Tab mr="10px">All</Tab>
               <Tab mr="10px">Active</Tab>
@@ -78,8 +75,8 @@ const Explore: NextPage = () => {
           </Tabs>
         </Box>
       </>
-      )
+    );
   }
-}
+};
 
 export default Explore;
