@@ -6,18 +6,18 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract CoActToken is ERC20, Ownable {
 
-    address public actionsContact;
+    address public actionsContract;
 
     constructor(string memory name, string memory symbol) ERC20(name, symbol) {
     }
 
     modifier onlyActions() {
-        require(msg.sender == actionsContact, "only actions contract can call this function");
+        require(msg.sender == actionsContract, "only actions contract can call this function");
         _;
     }
 
-    function setActionsContract(address _actionsContact) public onlyOwner {
-        actionsContact = _actionsContact;
+    function setActionsContract(address _actionsContract) public onlyOwner {
+        actionsContract = _actionsContract;
     }
 
     function mint(address account, uint256 amount) external onlyActions {

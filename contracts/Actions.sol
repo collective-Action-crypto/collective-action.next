@@ -50,7 +50,7 @@ contract Actions {
 
     mapping(uint256 => Proof[]) public proofs;
     mapping(uint256 => Dispute[]) public disputes;
-    mapping(uint256 => mapping(uint256 => Votes)) public votes;
+    mapping(uint256 => mapping(uint256 => Votes)) votes;
 
     constructor(address _governanceToken) {
         governanceToken = _governanceToken;
@@ -205,5 +205,9 @@ contract Actions {
         }
 
         return (ongoing, unsettled);
+    }
+
+    function hasVoted(uint256 actionId, uint256 disputeId, address voter) public view returns (bool) {
+        return votes[actionId][disputeId].voted[voter];
     }
 }
