@@ -11,6 +11,7 @@ import {
   Input,
   useColorModePreference,
   Text,
+  Box,
 } from "@chakra-ui/react";
 import Datepicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -33,7 +34,7 @@ function CreateBounty() {
   function validateName(value) {
     let error;
     if (!value) {
-      error = "Name is required";
+      error = "Field is required";
     }
     return error;
   }
@@ -143,6 +144,8 @@ function CreateBounty() {
                       </FormControl>
                     )}
                   </Field>
+                  <Box mt="12px"></Box>
+
                   <Field name="description" validate={validateName}>
                     {({ field, form }) => (
                       <FormControl
@@ -162,6 +165,8 @@ function CreateBounty() {
                       </FormControl>
                     )}
                   </Field>
+                  <Box mt="12px"></Box>
+
                   <Field name="image">
                     {({ field, form }) => (
                       <FormControl
@@ -190,11 +195,14 @@ function CreateBounty() {
                         >
                           Create
                         </Button>
+                        <Box mt="18px" />
                         <img id="target" src={image} />
                         <FormErrorMessage>{form.errors.image}</FormErrorMessage>
                       </FormControl>
                     )}
                   </Field>
+                  <Box mt="12px"></Box>
+
                   <Field name="cutOffDate">
                     {({ field, form }) => (
                       <FormControl
@@ -202,24 +210,29 @@ function CreateBounty() {
                           form.errors.cutOffDate && form.touched.cutOffDate
                         }
                       >
-                        <FormLabel htmlFor="cutOffDate">Cut off date</FormLabel>
-                        {/*<Input
-                          {...field}
-                          id="cutOffDate"
-                          placeholder="Cut Off Date"
-                        />*/}
-                        <Datepicker
-                          selected={date}
-                          onChange={(date: Date) => setDate(date)}
-                          showTimeSelect
-                          dateFormat="Pp"
-                        />
+                        <Box display="flex">
+                          <Box>
+                            <FormLabel htmlFor="cutOffDate">
+                              Cut Off Date:{" "}
+                            </FormLabel>
+                          </Box>
+                          <Box>
+                            <Datepicker
+                              selected={date}
+                              onChange={(date: Date) => setDate(date)}
+                              showTimeSelect
+                              dateFormat="Pp"
+                            />
+                          </Box>
+                        </Box>
                         <FormErrorMessage>
                           {form.errors.cutOffDate}
                         </FormErrorMessage>
                       </FormControl>
                     )}
                   </Field>
+                  <Box mt="12px"></Box>
+
                   <Field name="requirements" validate={validateName}>
                     {({ field, form }) => (
                       <FormControl
@@ -241,6 +254,8 @@ function CreateBounty() {
                       </FormControl>
                     )}
                   </Field>
+                  <Box mt="12px"></Box>
+
                   <Field name="prizePoolSize" validate={validateName}>
                     {({ field, form }) => (
                       <FormControl
@@ -261,17 +276,21 @@ function CreateBounty() {
                       </FormControl>
                     )}
                   </Field>
-                  <Button
-                    type="submit"
-                    colorScheme="green"
-                    mr={3}
-                    isLoading={props.isSubmitting}
-                  >
-                    Create
-                  </Button>
-                  <Button variant="ghost" onClick={onClose}>
-                    Close
-                  </Button>
+                  <Box mt="12px"></Box>
+
+                  <Box mt="32px" mb="24px" textAlign="right">
+                    <Button
+                      type="submit"
+                      colorScheme="green"
+                      mr={3}
+                      isLoading={props.isSubmitting}
+                    >
+                      Create Bounty
+                    </Button>
+                    <Button variant="ghost" onClick={onClose}>
+                      Close
+                    </Button>
+                  </Box>
                 </Form>
               )}
             </Formik>

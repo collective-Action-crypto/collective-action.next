@@ -13,7 +13,6 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Header />
       <Box textAlign="center">
         <Image width={1400} height={900} src={require('/assets/images/Landing.png')} alt="" />
       </Box>

@@ -23,6 +23,7 @@ contract Actions {
     struct Proof {
         address submitter;
         string proof;
+        bool failed;
     }
 
     struct Dispute {
@@ -126,12 +127,33 @@ contract Actions {
             }
             (bool ongoing, bool unsettled) = hasDisputes(i);
             if (unsettled) {
-                // todo: settle disputes
+                settleDisputes(i);
             }
 
             if (!ongoing && block.timestamp > a.disputePeriodEnd) {// no ongoing disputes and dispute period ended settle action
                 // todo: settle action
             }
+        }
+    }
+
+    function settleDisputes(uint256 actionId) private {
+        Dispute[] storage actionDisputes = disputes[actionId];
+        for (uint256 i = 0; i < actionDisputes.length; i++) {
+            Dispute storage current = actionDisputes[i];
+            if (current.disputeEndDate > block.timestamp && !current.settled) {
+                settleDispute(current, actionId);
+            }
+        }
+    }
+
+    function settleDispute(Dispute storage dispute, uint256 actionId) private {
+        if (dispute.forVotes > dispute.againstVotes) {// challenger wins
+            Proof storage proof = proofs[actionId][dispute.proofIndex];
+            proof.failed = true;
+
+            payable(dispute.creator).transfer(2 * actions[actionId].stakeAmount);
+        } else {// proof submitter wins, challenger money stay with us
+            dispute.settled = true;
         }
     }
 
