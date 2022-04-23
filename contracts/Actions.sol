@@ -10,6 +10,7 @@ contract Actions {
 
     struct Action {
         address creator;
+        uint256 creationDate;
         uint256 endDate;
         uint256 disputePeriodEnd;
         uint256 stakeAmount;
@@ -49,7 +50,7 @@ contract Actions {
 
     mapping(uint256 => Proof[]) public proofs;
     mapping(uint256 => Dispute[]) public disputes;
-    mapping(uint256 => mapping(uint256 => Votes)) votes;
+    mapping(uint256 => mapping(uint256 => Votes)) public votes;
 
     constructor(address _governanceToken) {
         governanceToken = _governanceToken;
@@ -63,6 +64,7 @@ contract Actions {
     ) public payable {
         Action memory action;
         action.creator = msg.sender;
+        action.creationDate = block.timestamp;
         action.endDate = _endDate;
         action.disputePeriodEnd = _endDate + ONE_WEEK_IN_SECONDS;
         action.stakeAmount = _stakeAmount;
