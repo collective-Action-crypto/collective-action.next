@@ -78,7 +78,9 @@ export async function getListOfDisputes(address: string | undefined) {
 
   while (true) {
     let dispute = 0;
-    const tmp = await contract.disputes(action, dispute);
+    console.log("Ulad loves tatum", dispute);
+    const tmp = await contract.actions(action);
+    console.log("Ulad loves tatum2", tmp);
     if (!tmp || (tmp[0] as any) == 0) break;
     while (true) {
       const tmp = await contract.disputes(action, dispute);
@@ -109,7 +111,11 @@ export async function getListOfDisputes(address: string | undefined) {
 }
 
 export const getAction = async (id: BigNumber) => {
-  const contract = new ethers.Contract(ACTIONS_CONTRACT_ADDRESS, ActionABI.abi, provider) as Actions;
+  const contract = new ethers.Contract(
+    ACTIONS_CONTRACT_ADDRESS,
+    ActionABI.abi,
+    provider
+  ) as Actions;
   const action = await contract.actions(id);
 
   return {
@@ -122,10 +128,9 @@ export const getAction = async (id: BigNumber) => {
     metadata: action.metadata,
     amount: action.amount,
     eligibleSubmittersCount: action.eligibleSubmittersCount,
-    settled: action.settled
-  }
-}
-
+    settled: action.settled,
+  };
+};
 export const getSubmissions = async (actionId: BigNumber) => {
   const contract = new ethers.Contract(ACTIONS_CONTRACT_ADDRESS, ActionABI.abi, provider) as Actions;
   const submissions = await contract.getProofs(actionId);
