@@ -19,7 +19,7 @@ export async function callSmartContractFunction( //would also call withdraw func
     amount: amount,
     fromPrivateKey: privateKey,
   };
-  console.log("wtf", params);
+  console.log("wtf", data);
   const url = `https://api-eu1.tatum.io/v3/polygon/smartcontract`;
   try {
     const resp = await axios.post(url, data, {
@@ -56,4 +56,4 @@ export async function getFromIPFS(cid: string) {
 
 export const toIPFSUrl = (cid: string) => {
   return "https://ipfs.io/ipfs/" + cid;
-}
+};

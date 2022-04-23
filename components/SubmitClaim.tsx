@@ -12,7 +12,7 @@ import {
   useColorModePreference,
   Text,
   Box,
-  Textarea
+  Textarea,
 } from "@chakra-ui/react";
 import Datepicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -49,10 +49,7 @@ function SubmitClaim({ id }) {
     callSmartContractFunction(
       "submitProof",
       Actions.abi,
-      [
-        id,
-        imageCid,
-      ],
+      [id, imageCid],
       action.stakeAmount.toString(),
       (currentUser.currentUser as any).privateKey
     );
@@ -65,7 +62,15 @@ function SubmitClaim({ id }) {
   return (
     <>
       {/* <Button borderRadius="16px" mr="24px" fontSize="14px" lineHeight="17px" width="110px" variant="ghost" textAlign="center" onClick={onOpen}>Create</Button> */}
-      <Button fontWeight="500" fontSize="14px" lineHeight="17px" borderRadius="16px" colorScheme='green' mr={3} onClick={onOpen}>
+      <Button
+        fontWeight="500"
+        fontSize="14px"
+        lineHeight="17px"
+        borderRadius="16px"
+        colorScheme="green"
+        mr={3}
+        onClick={onOpen}
+      >
         Submit Claim
       </Button>
 
@@ -90,11 +95,21 @@ function SubmitClaim({ id }) {
                   <Field name="description" validate={validateName}>
                     {({ field, form }) => (
                       <FormControl
-                        isInvalid={form.errors.description && form.touched.description}
+                        isInvalid={
+                          form.errors.description && form.touched.description
+                        }
                       >
-                        <FormLabel htmlFor="description">Claim Description</FormLabel>
-                        <Textarea {...field} id="description" placeholder="Description" />
-                        <FormErrorMessage>{form.errors.description}</FormErrorMessage>
+                        <FormLabel htmlFor="description">
+                          Claim Description
+                        </FormLabel>
+                        <Textarea
+                          {...field}
+                          id="description"
+                          placeholder="Description"
+                        />
+                        <FormErrorMessage>
+                          {form.errors.description}
+                        </FormErrorMessage>
                       </FormControl>
                     )}
                   </Field>
@@ -166,4 +181,3 @@ function SubmitClaim({ id }) {
 }
 
 export default SubmitClaim;
-
