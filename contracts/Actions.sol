@@ -210,4 +210,34 @@ contract Actions {
     function hasVoted(uint256 actionId, uint256 disputeId, address voter) public view returns (bool) {
         return votes[actionId][disputeId].voted[voter];
     }
+
+    function getProofs(uint256 actionId) public view returns (Proof[] memory) {
+        Proof[] memory actionProofs = proofs[actionId];
+        Proof[] memory result = new Proof[](actionProofs.length);
+        for (uint256 i = 0; i < actionProofs.length; i++) {
+            Proof memory current = actionProofs[i];
+            result[i].submitter = current.submitter;
+            result[i].proof = current.proof;
+            result[i].failed = current.failed;
+        }
+
+        return result;
+    }
+
+    function getDisputes(uint256 actionId) public view returns (Dispute[] memory) {
+        Dispute[] memory actionDisputes = disputes[actionId];
+        Dispute[] memory result = new Dispute[](actionDisputes.length);
+        for (uint256 i = 0; i < actionDisputes.length; i++) {
+            Dispute memory current = actionDisputes[i];
+            result[i].creator = current.creator;
+            result[i].proofIndex = current.proofIndex;
+            result[i].disputeProof = current.disputeProof;
+            result[i].disputeEndDate = current.disputeEndDate;
+            result[i].settled = current.settled;
+            result[i].forVotes = current.forVotes;
+            result[i].againstVotes = current.againstVotes;
+        }
+
+        return result;
+    }
 }
