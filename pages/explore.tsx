@@ -68,13 +68,77 @@ const Explore: NextPage = () => {
                 </Box>
               </TabPanel>
               <TabPanel>
-                <p>one!</p>
+                {actions
+                  ? actions
+                      .filter(
+                        (action) => new Date(action.endDate) >= new Date()
+                      )
+                      .map((action, index) => {
+                        return (
+                          <Card
+                            title={action.title}
+                            description={action.description}
+                            profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
+                            profile_name={action.creator}
+                            type={"Charity"}
+                            current_value_in_usd={10000}
+                            total_value_in_usd={15000}
+                            key={index}
+                            id={index}
+                          />
+                        );
+                      })
+                  : null}
               </TabPanel>
               <TabPanel>
-                <p>two!</p>
+                {actions
+                  ? actions
+                      .filter(
+                        (action) =>
+                          new Date(action.endDate) < new Date() &&
+                          !action.settled
+                      )
+                      .map((action, index) => {
+                        return (
+                          <Card
+                            title={action.title}
+                            description={action.description}
+                            profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
+                            profile_name={action.creator}
+                            type={"Charity"}
+                            current_value_in_usd={10000}
+                            total_value_in_usd={15000}
+                            key={index}
+                            id={index}
+                          />
+                        );
+                      })
+                  : null}
               </TabPanel>
               <TabPanel>
-                <p>three!</p>
+                {actions
+                  ? actions
+                      .filter(
+                        (action) =>
+                          new Date(action.endDate) < new Date() &&
+                          action.settled
+                      )
+                      .map((action, index) => {
+                        return (
+                          <Card
+                            title={action.title}
+                            description={action.description}
+                            profile_url="https://www.penthousepantherclub.com/pharaoh_small.png"
+                            profile_name={action.creator}
+                            type={"Charity"}
+                            current_value_in_usd={10000}
+                            total_value_in_usd={15000}
+                            key={index}
+                            id={index}
+                          />
+                        );
+                      })
+                  : null}
               </TabPanel>
             </TabPanels>
           </Tabs>
