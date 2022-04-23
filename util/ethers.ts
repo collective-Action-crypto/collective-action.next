@@ -40,7 +40,6 @@ export async function getTokenBalance(address: string) {
 }
 
 export async function getListOfActions() {
-
   let actions = [] as object[];
   let i = 0;
   while (true) {
@@ -69,20 +68,40 @@ export async function getListOfActions() {
 
 export async function getListOfDisputes(address: string | undefined) {
   const contract = new ethers.Contract(
-    "0xFf876C477C0F2BD05a23326AdC08720CaBaeAf91",
+    ACTIONS_CONTRACT_ADDRESS,
     ActionABI.abi,
     provider
   ) as Actions;
   let disputes = [] as object[];
   let action = 0;
-
   while (true) {
     let dispute = 0;
     console.log("Ulad loves tatum", dispute);
-    const tmp = await contract.actions(action);
+    const tmp = await contract.getDisputes(action);
+    //if (address) debugger;
     console.log("Ulad loves tatum2", tmp);
-    if (!tmp || (tmp[0] as any) == 0) break;
-    while (true) {
+    if (!tmp || tmp.length == 0) break;
+    for (let i = 0; i < tmp.length; i++) {
+      const tmpDispute = tmp[i];
+      const proof = (await contract.getProofs(action))[
+        tmpDispute.proofIndex.toNumber()
+      ];
+      const voted = address
+        ? await contract.hasVoted(action, dispute, address)
+        : false;
+      disputes.push({
+        action: action,
+        creator: tmpDispute.creator,
+        forProof: proof.proof,
+        againstVotes: tmpDispute.againstVotes,
+        alreadyVoted: voted,
+        forVotes: tmpDispute.forVotes,
+        disputeEndDate: tmpDispute.disputeEndDate,
+        settled: tmpDispute.settled,
+        disputeProof: tmpDispute.disputeProof,
+      });
+    }
+    /*while (true) {
       const tmp = await contract.disputes(action, dispute);
       if (!tmp || (tmp[0] as any) == 0) break;
       //const metadata = await getFromIPFS(tmp.metadata);
@@ -103,7 +122,7 @@ export async function getListOfDisputes(address: string | undefined) {
       });
       console.log("mmh", tmp);
       dispute++;
-    }
+    }*/
     action++;
   }
   console.log("hahahah", disputes);
@@ -132,13 +151,17 @@ export const getAction = async (id: BigNumber) => {
   };
 };
 export const getSubmissions = async (actionId: BigNumber) => {
-  const contract = new ethers.Contract(ACTIONS_CONTRACT_ADDRESS, ActionABI.abi, provider) as Actions;
+  const contract = new ethers.Contract(
+    ACTIONS_CONTRACT_ADDRESS,
+    ActionABI.abi,
+    provider
+  ) as Actions;
   const submissions = await contract.getProofs(actionId);
-  return submissions.map(it => {
+  return submissions.map((it) => {
     return {
       submitter: it.submitter,
       proof: it.proof,
-      failed: it.failed
-    }
-  })
-}
+      failed: it.failed,
+    };
+  });
+};

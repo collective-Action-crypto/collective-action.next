@@ -30,12 +30,12 @@ const Dispute: NextPage = () => {
   console.log("currUser", currentUser);
   useEffect(() => {
     getListOfDisputes(
-      currentUser.currentUser && (currentUser.currentUser as any).walletAddress
+      currentUser.currentUser && (currentUser.currentUser as any).address
     ).then((disputes) => {
       setDisputes(disputes as dispute[]);
       setLoading(false);
     });
-  }, [currentUser.currentUser]);
+  }, [currentUser.currentUser && (currentUser.currentUser as any).address]);
   if (!loading) {
     return (
       <>
