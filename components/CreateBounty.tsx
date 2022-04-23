@@ -11,7 +11,7 @@ import {
   Input,
   useColorModePreference,
   Text,
-  Box
+  Box,
 } from "@chakra-ui/react";
 import Datepicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -20,7 +20,6 @@ import { Field, Form, Formik } from "formik";
 import { useContext, useEffect, useRef, useState } from "react";
 import { createBlobFromObject, loadFile } from "../util/helper";
 import { callSmartContractFunction, pushToIPFS } from "../util/tatum";
-import Actions from "../artifacts/contracts/Actions.sol/Actions.json";
 import { AuthContext } from "../contexts/AuthContext";
 import { ethers } from "ethers";
 const STAKE_AMOUNT = "0.1";
@@ -98,7 +97,18 @@ function CreateBounty() {
   };
   return (
     <>
-      <Button borderRadius="16px" mr="24px" fontSize="14px" lineHeight="17px" width="110px" variant="ghost" textAlign="center" onClick={onOpen}>Create</Button>
+      <Button
+        borderRadius="16px"
+        mr="24px"
+        fontSize="14px"
+        lineHeight="17px"
+        width="110px"
+        variant="ghost"
+        textAlign="center"
+        onClick={onOpen}
+      >
+        Create
+      </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -201,7 +211,9 @@ function CreateBounty() {
                       >
                         <Box display="flex">
                           <Box>
-                            <FormLabel htmlFor="cutOffDate">Cut Off Date: </FormLabel>
+                            <FormLabel htmlFor="cutOffDate">
+                              Cut Off Date:{" "}
+                            </FormLabel>
                           </Box>
                           <Box>
                             <Datepicker
@@ -334,7 +346,7 @@ function CreateBounty() {
           </ModalBody>
 
           {/* <ModalFooter>
-              <Input type="submit" colorScheme="green" mr={3}>
+                <Input type="submit" colorScheme="green" mr={3}>
                 Create
               </Input>
               <Button variant="ghost" onClick={onClose}>
