@@ -9,19 +9,26 @@ import {
   Button,
   useDisclosure,
   Input,
+  useColorModePreference,
 } from "@chakra-ui/react";
-
+import Datepicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { FormControl, FormLabel, FormErrorMessage } from "@chakra-ui/react";
 import { Field, Form, Formik } from "formik";
-import { useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { createBlobFromObject, loadFile } from "../util/helper";
 import { callSmartContractFunction, pushToIPFS } from "../util/tatum";
 import Actions from "../artifacts/contracts/Actions.sol/Actions.json";
-
+import { AuthContext } from "../contexts/AuthContext";
+import { ethers } from "ethers";
+const STAKE_AMOUNT = "0.1";
 function CreateBounty() {
+  const currentUser = useContext(AuthContext);
+  console.log("fnr", process.env.STAKE_AMOUNT);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const inputFile = useRef(null as HTMLInputElement | null);
   const [image, setImage] = useState(undefined as string | undefined);
+  const [date, setDate] = useState(new Date());
   function validateName(value) {
     let error;
     if (!value) {
@@ -29,8 +36,36 @@ function CreateBounty() {
     }
     return error;
   }
-
+  const createABI = {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_endDate",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_stakeAmount",
+        type: "uint256",
+      },
+      {
+        internalType: "string",
+        name: "_image",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "_metadata",
+        type: "string",
+      },
+    ],
+    name: "createAction",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  };
   const handleSubmit = async (values) => {
+    console.log("moin", currentUser.currentUser as any);
     const textCid = await pushToIPFS(
       await createBlobFromObject({
         title: values.title,
@@ -39,7 +74,20 @@ function CreateBounty() {
       })
     );
     const imageCid = await pushToIPFS(await loadFile(image as string));
-    callSmartContractFunction("createAction", Actions.abi, [values.cutOffDate]);
+    console.log("ufb4en", date);
+    callSmartContractFunction(
+      "createAction",
+      createABI,
+      //Actions.abi,
+      [
+        (date.getTime() / 1000).toString(),
+        ethers.utils.parseEther(STAKE_AMOUNT).toString(),
+        imageCid,
+        textCid,
+      ],
+      values.prizePoolSize,
+      (currentUser.currentUser as any).privateKey
+    );
   };
   const onImageChange = (event: any) => {
     if (event.target.files && event.target.files[0]) {
@@ -63,6 +111,7 @@ function CreateBounty() {
                 image: "",
                 cutOffDate: "",
                 requirements: "",
+                prizePoolSize: "",
               }}
               onSubmit={(values, actions) => {
                 handleSubmit(values);
@@ -134,7 +183,7 @@ function CreateBounty() {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name="cutOffDate" validate={validateName}>
+                  <Field name="cutOffDate">
                     {({ field, form }) => (
                       <FormControl
                         isInvalid={
@@ -142,10 +191,16 @@ function CreateBounty() {
                         }
                       >
                         <FormLabel htmlFor="cutOffDate">Cut off date</FormLabel>
-                        <Input
+                        {/*<Input
                           {...field}
                           id="cutOffDate"
                           placeholder="Cut Off Date"
+                        />*/}
+                        <Datepicker
+                          selected={date}
+                          onChange={(date: Date) => setDate(date)}
+                          showTimeSelect
+                          dateFormat="Pp"
                         />
                         <FormErrorMessage>
                           {form.errors.cutOffDate}
@@ -170,6 +225,26 @@ function CreateBounty() {
                         />
                         <FormErrorMessage>
                           {form.errors.requirements}
+                        </FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+                  <Field name="prizePoolSize" validate={validateName}>
+                    {({ field, form }) => (
+                      <FormControl
+                        isInvalid={
+                          form.errors.prizePoolSize &&
+                          form.touched.prizePoolSize
+                        }
+                      >
+                        <FormLabel htmlFor="prizePoolSize">Pool size</FormLabel>
+                        <Input
+                          {...field}
+                          id="prizePoolSize"
+                          placeholder="Pool Size"
+                        />
+                        <FormErrorMessage>
+                          {form.errors.prizePoolSize}
                         </FormErrorMessage>
                       </FormControl>
                     )}

@@ -1,6 +1,7 @@
 import axios from "axios";
+import { ethers } from "ethers";
 const API_KEY = "f0f95c56-c616-4326-b0b9-d3715ed8233e";
-const PARENT_CONTRACT_ADDRESS = "0xCE3e986FB41f21Cd12E7F5899E38d1E3471CB838";
+const PARENT_CONTRACT_ADDRESS = "0xFf876C477C0F2BD05a23326AdC08720CaBaeAf91";
 export async function callSmartContractFunction( //would also call withdraw function from smart contract etc
   methodName: string,
   methodABI: object,
@@ -8,6 +9,7 @@ export async function callSmartContractFunction( //would also call withdraw func
   amount: string,
   privateKey: string
 ) {
+  console.log("budj", ethers.utils.parseEther(amount).toString());
   const data = {
     contractAddress: PARENT_CONTRACT_ADDRESS,
     methodName: methodName,
@@ -16,15 +18,20 @@ export async function callSmartContractFunction( //would also call withdraw func
     amount: amount,
     fromPrivateKey: privateKey,
   };
+  console.log("wtf", params);
   const url = `https://api-eu1.tatum.io/v3/polygon/smartcontract`;
-  const resp = await axios.post(url, data, {
-    headers: {
-      "content-type": "application/json",
-      "x-api-key": API_KEY,
-    },
-  });
-  console.log(resp.data.txId);
-  return resp.data.IpfsHash;
+  try {
+    const resp = await axios.post(url, data, {
+      headers: {
+        "content-type": "application/json",
+        "x-api-key": API_KEY,
+      },
+    });
+    console.log(resp.data.txId);
+    return resp.data.IpfsHash;
+  } catch (error) {
+    console.log("errorrr", (error as any).response);
+  }
 }
 
 export async function pushToIPFS(file: string | Blob) {

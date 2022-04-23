@@ -116,7 +116,7 @@ const getMaticAccountDetails = async (
 
   const balance = await erc20Token.getBalance(address);
 
-  setUserAccountInfo({ balance, address });
+  setUserAccountInfo({ balance, address, privateKey });
 };
 export async function initializeOpenlogin(
   level: string,
