@@ -63,7 +63,7 @@ export async function getListOfDisputes(address: string | undefined) {
   console.log("prov", provider);
   const contract = new ethers.Contract(
     "0xFf876C477C0F2BD05a23326AdC08720CaBaeAf91",
-    actionabi.abi,
+    ActionABI.abi,
     provider
   ) as Actions;
   let disputes = [] as object[];
@@ -71,7 +71,9 @@ export async function getListOfDisputes(address: string | undefined) {
 
   while (true) {
     let dispute = 0;
-    const tmp = await contract.disputes(action, dispute);
+    console.log("Ulad loves tatum", dispute);
+    const tmp = await contract.actions(action);
+    console.log("Ulad loves tatum2", tmp);
     if (!tmp || (tmp[0] as any) == 0) break;
     while (true) {
       const tmp = await contract.disputes(action, dispute);
@@ -79,7 +81,7 @@ export async function getListOfDisputes(address: string | undefined) {
       //const metadata = await getFromIPFS(tmp.metadata);
       const proof = await contract.proofs(action, tmp.proofIndex);
       const voted = address
-        ? await contract.votes(action, dispute, address)
+        ? await contract.hasVoted(action, dispute, address)
         : false;
       disputes.push({
         action: action,
@@ -101,7 +103,11 @@ export async function getListOfDisputes(address: string | undefined) {
   return disputes;
 }
 export const getAction = async (id: BigNumber) => {
-  const contract = new ethers.Contract(ACTIONS_CONTRACT_ADDRESS, ActionABI.abi, provider) as Actions;
+  const contract = new ethers.Contract(
+    ACTIONS_CONTRACT_ADDRESS,
+    ActionABI.abi,
+    provider
+  ) as Actions;
   const action = await contract.actions(id);
 
   return {
@@ -113,6 +119,6 @@ export const getAction = async (id: BigNumber) => {
     metadata: action.metadata,
     amount: action.amount,
     eligibleSubmittersCount: action.eligibleSubmittersCount,
-    settled: action.settled
-  }
-}
+    settled: action.settled,
+  };
+};
