@@ -8,14 +8,13 @@ contract CollectiveActions {
     address[] public actions;
 
     function createAction(
-        address token,
-        uint256 targetAmount,
-        uint256 cutOfTime,
-        uint256 optimisticLockDuration,
-        bytes32 metadata,
-        bytes32 image
+        uint256 endDate,
+        uint256 disputePeriod,
+        uint256 stakeAmount,
+        bytes memory image,
+        bytes memory metadata
     ) public {
-        Action action = new Action(msg.sender, token, targetAmount, cutOfTime, optimisticLockDuration, metadata, image);
+        Action action = new Action(msg.sender, endDate, disputePeriod, stakeAmount, image, metadata);
         actions.push(address(action));
     }
 }
