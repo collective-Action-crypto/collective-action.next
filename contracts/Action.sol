@@ -10,8 +10,8 @@ contract Action {
     uint256 public immutable targetAmount;
     uint256 public immutable cutOfTime;
     uint256 public immutable optimisticLockDuration;
-    // todo: IPFS title and description
-    // todo: IPFS image
+    bytes32 public immutable metadata;
+    bytes32 public immutable image;
 
     uint256 public raisedAmount = 0;
 
@@ -22,13 +22,17 @@ contract Action {
         address _token,
         uint256 _targetAmount,
         uint256 _cutOfTime,
-        uint256 _optimisticLockDuration
+        uint256 _optimisticLockDuration,
+        bytes32 _metadata,
+        bytes32 _image
     ) {
         creator = _creator;
         token = IERC20(_token);
         targetAmount = _targetAmount;
         cutOfTime = _cutOfTime;
         optimisticLockDuration = _optimisticLockDuration;
+        metadata = _metadata;
+        image = _image;
     }
 
     function contribute(uint256 amount) public {
