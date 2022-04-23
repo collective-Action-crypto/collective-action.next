@@ -13,7 +13,6 @@ import {
   TableContainer,
   Link
 } from '@chakra-ui/react';
-import { NextPage } from 'next';
 import React from 'react';
 import Header from '../../components/Header';
 import colors from '../../theme/colors';

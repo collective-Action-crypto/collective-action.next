@@ -11,7 +11,7 @@ const Explore: NextPage = () => {
           Explore
         </Heading>
       </Box>
-      <Box textAlign="center" borderColor='red'  ml="auto" mr="auto" mt="40px">
+      <Box textAlign="center" ml="auto" mr="auto" mt="40px">
         <Tabs variant='soft-rounded' colorScheme='green'>
           <TabList display="flex" justifyContent="center">
             <Tab mr="10px">All</Tab>
