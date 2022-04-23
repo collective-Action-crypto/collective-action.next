@@ -1,14 +1,17 @@
-import { Box, Button, Link } from '@chakra-ui/react';
-import React from 'react';
-import { useContext, useEffect, useState } from 'react';
-import { handleLogin, handleLogout, initializeOpenlogin } from '../util/web3auth';
-import { AuthContext } from '../contexts/AuthContext';
-import CreateBounty from './CreateBounty';
-
+import { Box, Button, Link } from "@chakra-ui/react";
+import React from "react";
+import { useContext, useEffect, useState } from "react";
+import {
+  handleLogin,
+  handleLogout,
+  initializeOpenlogin,
+} from "../util/web3auth";
+import { AuthContext } from "../contexts/AuthContext";
+import CreateBounty from "./CreateBounty";
 
 const Header = () => {
   const [loading, setLoading] = useState(false as boolean);
-  const [openlogin, setSdk] = useState(undefined  as object|undefined);
+  const [openlogin, setSdk] = useState(undefined as object | undefined);
   const { currentUser, setCurrentUser } = useContext(AuthContext);
   const [level, setChainLevel] = useState("l2"); // "l1" or "l2"
 
@@ -17,11 +20,17 @@ const Header = () => {
   useEffect(() => {
     setLoading(true);
     initializeOpenlogin(level, setCurrentUser, setSdk, setLoading);
-  }, [level])
+  }, [level]);
 
   return (
     <>
-      <Box borderWidth="1px" display="flex" justifyContent={"space-around"} mx="300px" py="20px">
+      <Box
+        borderWidth="1px"
+        display="flex"
+        justifyContent={"space-around"}
+        mx="300px"
+        py="20px"
+      >
         <Box flex={3} borderWidth="1px" pl="50px">
           <Link>LOGO</Link>
         </Box>
@@ -30,16 +39,34 @@ const Header = () => {
           <Link mr="30px">
             <CreateBounty />
           </Link>
-          {loading
-            ? 'LOADING'
-            : isUserLoggedIn
-              ? <Button onClick={() => handleLogout(openlogin as object, setLoading, false)}>Logout</Button>
-              : <Button onClick={() => handleLogin(openlogin as object, setLoading, level, setCurrentUser)}>Login</Button>
-          }
+          {loading ? (
+            "LOADING"
+          ) : isUserLoggedIn ? (
+            <Button
+              onClick={() =>
+                handleLogout(openlogin as object, setLoading, false)
+              }
+            >
+              Logout
+            </Button>
+          ) : (
+            <Button
+              onClick={() =>
+                handleLogin(
+                  openlogin as object,
+                  setLoading,
+                  level,
+                  setCurrentUser
+                )
+              }
+            >
+              Login
+            </Button>
+          )}
         </Box>
       </Box>
     </>
-  )
-}
+  );
+};
 
 export default Header;
