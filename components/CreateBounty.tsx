@@ -10,7 +10,7 @@ import {
   useDisclosure,
   Input,
   useColorModePreference,
-  Text
+  Text,
 } from "@chakra-ui/react";
 import Datepicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -97,7 +97,18 @@ function CreateBounty() {
   };
   return (
     <>
-      <Button borderRadius="16px" mr="24px" fontSize="14px" lineHeight="17px" width="110px" variant="ghost" textAlign="center" onClick={onOpen}>Create</Button>
+      <Button
+        borderRadius="16px"
+        mr="24px"
+        fontSize="14px"
+        lineHeight="17px"
+        width="110px"
+        variant="ghost"
+        textAlign="center"
+        onClick={onOpen}
+      >
+        Create
+      </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -317,7 +328,7 @@ function CreateBounty() {
           </ModalBody>
 
           {/* <ModalFooter>
-              <Input type="submit" colorScheme="green" mr={3}>
+                <Input type="submit" colorScheme="green" mr={3}>
                 Create
               </Input>
               <Button variant="ghost" onClick={onClose}>
