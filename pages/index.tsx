@@ -1,22 +1,8 @@
-import { Box, Link, Text } from '@chakra-ui/react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Header from '../components/Header'
-import { useContext, useEffect, useState } from 'react';
-import { handleLogin, initializeOpenlogin } from '../util/web3auth';
-import { AuthContext } from '../contexts/AuthContext';
 
 const Home: NextPage = () => {
-  const [loading, setLoading] = useState(false as boolean);
-  const [openlogin, setSdk] = useState(undefined  as object|undefined);
-  const { currentUser, setCurrentUser } = useContext(AuthContext);
-  const [level, setChainLevel] = useState("l2"); // "l1" or "l2"
-
-  useEffect(() => {
-    setLoading(true);
-    initializeOpenlogin(level, setCurrentUser, setSdk, setLoading);
-  }, [level])
-
   return (
     <div>
       <Head>
@@ -27,7 +13,7 @@ const Home: NextPage = () => {
 
       <Header />
 
-      {
+      {/* {
       loading ?
         <div>
             <div style={{ display: "flex", flexDirection: "column", width: "100%", justifyContent: "center", alignItems: "center", margin: 20 }}>
@@ -38,7 +24,8 @@ const Home: NextPage = () => {
           (openlogin && (openlogin as any).privKey) ?
           <div>
             <span>Connected to : { level === "l1" ? "Goerli Network":  "Mumbai Matic testnet"} </span> 
-          </div>:
+          </div>
+          :
             <div className="loginContainer">
                 <h1 style={{ textAlign: "center" }}>Openlogin x Polygon</h1>
                 <div onClick={()=>handleLogin(openlogin as object, setLoading, level, setCurrentUser)} className="btn">
@@ -47,7 +34,7 @@ const Home: NextPage = () => {
             </div>
         }
         </div>
-      }
+      } */}
     </div>
   )
 }
