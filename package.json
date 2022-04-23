@@ -9,6 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aave/protocol-js": "^4.3.0",
+    "@maticnetwork/maticjs": "^3.2.5",
+    "@maticnetwork/maticjs-web3": "^1.0.1",
+    "@toruslabs/openlogin": "^1.7.3",
+    "@web3auth/web3auth": "^0.9.3",
     "@openzeppelin/contracts": "^4.5.0",
     "dotenv": "^16.0.0",
     "ethers": "^5.6.4",
