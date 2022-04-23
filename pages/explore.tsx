@@ -27,11 +27,13 @@ const Explore: NextPage = () => {
   if (!loading) {
     return (
       <>
-        <Box as="h1" textAlign={"center"} mt="30px">
-          <Heading>Explore</Heading>
+        <Box as='h1' textAlign={'center'} mt="30px">
+          <Heading>
+            Explore
+          </Heading>
         </Box>
-        <Box textAlign="center" borderColor="red" ml="auto" mr="auto" mt="40px">
-          <Tabs variant="soft-rounded" colorScheme="green">
+        <Box textAlign="center" ml="auto" mr="auto" mt="40px">
+          <Tabs variant='soft-rounded' colorScheme='green'>
             <TabList display="flex" justifyContent="center">
               <Tab mr="10px">All</Tab>
               <Tab mr="10px">Active</Tab>
@@ -76,12 +78,8 @@ const Explore: NextPage = () => {
           </Tabs>
         </Box>
       </>
-    );
-  } else {
-    <Box width="110px">
-      <CircularProgress size="30px" isIndeterminate color="green.300" />
-    </Box>;
+      )
   }
-};
+}
 
 export default Explore;

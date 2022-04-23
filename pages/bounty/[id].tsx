@@ -13,6 +13,7 @@ import {
   TableContainer,
   Link
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 import Header from '../../components/Header';
 import OpenDispute from '../../components/OpenDispute';
@@ -21,7 +22,10 @@ import SubmitClaim from '../../components/SubmitClaim';
 import colors from '../../theme/colors';
 import { truncateWallet } from '../../util/truncateWallet';
 
-const Bounty = ({ id }) => {
+const Bounty = () => {
+  const router = useRouter();
+  const { id } = router.query;
+
   return (
     <>
       <Box borderWidth="1px" borderColor={colors.neutral_100} p="32px" display="flex" borderRadius="24px" width="1288px" mt="56px" ml="auto" mr="auto">
@@ -30,7 +34,7 @@ const Bounty = ({ id }) => {
         </Box>
         <Box flex={1}>
           <Text fontWeight="600" fontSize="30px" lineHeight="150%" letterSpacing="0.01em" color={colors.neutral_900}>
-            Pellentesque suscipit fringilla libero eu ullamcorper.
+            {`ID IS ${id}!! Pellentesque suscipit fringilla libero eu ullamcorper.`}
           </Text>
           <Box>
             <Text></Text>

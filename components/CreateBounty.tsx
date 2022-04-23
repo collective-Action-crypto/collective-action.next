@@ -20,7 +20,6 @@ import { Field, Form, Formik } from "formik";
 import { useContext, useEffect, useRef, useState } from "react";
 import { createBlobFromObject, loadFile } from "../util/helper";
 import { callSmartContractFunction, pushToIPFS } from "../util/tatum";
-import Actions from "../artifacts/contracts/Actions.sol/Actions.json";
 import { AuthContext } from "../contexts/AuthContext";
 import { ethers } from "ethers";
 const STAKE_AMOUNT = "0.1";

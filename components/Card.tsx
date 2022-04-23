@@ -1,13 +1,15 @@
 import { Box, Image, Link, Progress, Text } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 import colors from '../theme/colors';
 import text from '../theme/text';
 
-const Card = ({ title, description, profile_url, profile_name, type, current_value_in_usd, total_value_in_usd }) => {
+const Card = ({ id, title, description, profile_url, profile_name, type, current_value_in_usd, total_value_in_usd }) => {
+  const router = useRouter();
   const percentFunded = ((current_value_in_usd/total_value_in_usd)*100).toFixed(0);
 
   return (
-    <Link width="307px" height="488px" borderWidth="1px" borderColor={colors.neutral_100} p="20px" borderRadius="24px" _hover={{borderColor: 'rgb(0,128,0,0.4)', boxShadow: `0px 50px 20px rgba(92, 92, 92, 0.01), 0px 28px 17px rgba(92, 92, 92, 0.02), 0px 12px 12px rgba(92, 92, 92, 0.04), 0px 3px 7px rgba(92, 92, 92, 0.05), 0px 0px 0px rgba(92, 92, 92, 0.05)`}}>
+    <Link onClick={() => router.push(`/bounty/${id}`)} mt="20px" width="307px" height="488px" borderWidth="1px" borderColor={colors.neutral_100} p="20px" borderRadius="24px" _hover={{borderColor: 'rgb(0,128,0,0.4)', boxShadow: `0px 50px 20px rgba(92, 92, 92, 0.01), 0px 28px 17px rgba(92, 92, 92, 0.02), 0px 12px 12px rgba(92, 92, 92, 0.04), 0px 3px 7px rgba(92, 92, 92, 0.05), 0px 0px 0px rgba(92, 92, 92, 0.05)`}}>
       <Box borderWidth="1px" width="267px" height="168px" borderRadius="8px" overflow="hidden">
         <Image src="https://www.penthousepantherclub.com/pharaoh_small.png" alt='' />
         <Box display="flex" position="relative" bottom="120px" ml="10px">
