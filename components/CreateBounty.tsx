@@ -11,45 +11,40 @@ import {
   Input,
 } from "@chakra-ui/react";
 
-import {
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-} from "@chakra-ui/react";
+import { FormControl, FormLabel, FormErrorMessage } from "@chakra-ui/react";
 import { Field, Form, Formik } from "formik";
 import { useRef, useState } from "react";
 import { createBlobFromObject, loadFile } from "../util/helper";
-import { pushToIPFS } from "../util/tatum";
+import { callSmartContractFunction, pushToIPFS } from "../util/tatum";
+import Actions from "../artifacts/contracts/Actions.sol/Actions.json";
 
 function CreateBounty() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const inputFile = useRef(null as HTMLInputElement | null);
-
+  const [image, setImage] = useState(undefined as string | undefined);
   function validateName(value) {
-    let error
+    let error;
     if (!value) {
-      error = 'Name is required'
+      error = "Name is required";
     }
-    return error
+    return error;
   }
 
   const handleSubmit = async (values) => {
-    console.log(values);
-    /*console.log(`title: ${title}`);
-    console.log(`description: ${description}`);
-    console.log(`image: ${image}`);
-    console.log(`cutOffDate: ${cutOffDate}`);
-    console.log(`requirements: ${requirements}`);
     const textCid = await pushToIPFS(
       await createBlobFromObject({
-        title: title,
-        description: description,
-        requirements: requirements,
+        title: values.title,
+        description: values.description,
+        requirements: values.requirements,
       })
     );
     const imageCid = await pushToIPFS(await loadFile(image as string));
-    console.log("cid", textCid);
-    console.log("cid2", imageCid);*/
+    callSmartContractFunction("createAction", Actions.abi, [values.cutOffDate]);
+  };
+  const onImageChange = (event: any) => {
+    if (event.target.files && event.target.files[0]) {
+      setImage(URL.createObjectURL(event.target.files[0]));
+    }
   };
   return (
     <>
@@ -58,74 +53,142 @@ function CreateBounty() {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-            <ModalHeader>Create Bounty</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-
+          <ModalHeader>Create Bounty</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
             <Formik
-              initialValues={{ title: '', description: '', image: '', cutOffDate: '', requirements: '' }}
+              initialValues={{
+                title: "",
+                description: "",
+                image: "",
+                cutOffDate: "",
+                requirements: "",
+              }}
               onSubmit={(values, actions) => {
                 handleSubmit(values);
-                actions.setSubmitting(false)
+                actions.setSubmitting(false);
               }}
             >
               {(props) => (
                 <Form>
-                  <Field name='title' validate={validateName}>
+                  <Field name="title" validate={validateName}>
                     {({ field, form }) => (
-                      <FormControl isInvalid={form.errors.title && form.touched.title}>
-                        <FormLabel htmlFor='title'>Title</FormLabel>
-                        <Input {...field} id='title' placeholder='Name' />
+                      <FormControl
+                        isInvalid={form.errors.title && form.touched.title}
+                      >
+                        <FormLabel htmlFor="title">Title</FormLabel>
+                        <Input {...field} id="title" placeholder="Name" />
                         <FormErrorMessage>{form.errors.title}</FormErrorMessage>
                       </FormControl>
                     )}
                   </Field>
-                  <Field name='description' validate={validateName}>
+                  <Field name="description" validate={validateName}>
                     {({ field, form }) => (
-                      <FormControl isInvalid={form.errors.description && form.touched.description}>
-                        <FormLabel htmlFor='description'>Description</FormLabel>
-                        <Input {...field} id='description' placeholder='Description' />
-                        <FormErrorMessage>{form.errors.description}</FormErrorMessage>
+                      <FormControl
+                        isInvalid={
+                          form.errors.description && form.touched.description
+                        }
+                      >
+                        <FormLabel htmlFor="description">Description</FormLabel>
+                        <Input
+                          {...field}
+                          id="description"
+                          placeholder="Description"
+                        />
+                        <FormErrorMessage>
+                          {form.errors.description}
+                        </FormErrorMessage>
                       </FormControl>
                     )}
                   </Field>
-                  <Field name='image' validate={validateName}>
+                  <Field name="image">
                     {({ field, form }) => (
-                      <FormControl isInvalid={form.errors.image && form.touched.image}>
-                        <FormLabel htmlFor='image'>Image</FormLabel>
-                        <Input {...field} id='image' placeholder='Image' />
+                      <FormControl
+                        isInvalid={form.errors.image && form.touched.image}
+                      >
+                        <FormLabel htmlFor="image">Image</FormLabel>
+                        <Input
+                          {...field}
+                          type="file"
+                          id="image"
+                          ref={inputFile}
+                          style={{ display: "none" }}
+                          accept="image/*"
+                          onChange={onImageChange}
+                        />
+                        {/*<Input {...field} id="image" placeholder="Image" />*/}
+                        <Button
+                          onClick={
+                            inputFile.current
+                              ? (e) =>
+                                  (
+                                    inputFile.current as HTMLInputElement
+                                  ).click()
+                              : () => {}
+                          }
+                        >
+                          Create
+                        </Button>
+                        <img id="target" src={image} />
                         <FormErrorMessage>{form.errors.image}</FormErrorMessage>
                       </FormControl>
                     )}
                   </Field>
-                  <Field name='cutOffDate' validate={validateName}>
+                  <Field name="cutOffDate" validate={validateName}>
                     {({ field, form }) => (
-                      <FormControl isInvalid={form.errors.cutOffDate && form.touched.cutOffDate}>
-                        <FormLabel htmlFor='cutOffDate'>Cut off date</FormLabel>
-                        <Input {...field} id='cutOffDate' placeholder='Cut Off Date' />
-                        <FormErrorMessage>{form.errors.cutOffDate}</FormErrorMessage>
+                      <FormControl
+                        isInvalid={
+                          form.errors.cutOffDate && form.touched.cutOffDate
+                        }
+                      >
+                        <FormLabel htmlFor="cutOffDate">Cut off date</FormLabel>
+                        <Input
+                          {...field}
+                          id="cutOffDate"
+                          placeholder="Cut Off Date"
+                        />
+                        <FormErrorMessage>
+                          {form.errors.cutOffDate}
+                        </FormErrorMessage>
                       </FormControl>
                     )}
                   </Field>
-                  <Field name='requirements' validate={validateName}>
+                  <Field name="requirements" validate={validateName}>
                     {({ field, form }) => (
-                      <FormControl isInvalid={form.errors.requirements && form.touched.requirements}>
-                        <FormLabel htmlFor='requirements'>Requirements</FormLabel>
-                        <Input {...field} id='requirements' placeholder='Requirements' />
-                        <FormErrorMessage>{form.errors.requirements}</FormErrorMessage>
+                      <FormControl
+                        isInvalid={
+                          form.errors.requirements && form.touched.requirements
+                        }
+                      >
+                        <FormLabel htmlFor="requirements">
+                          Requirements
+                        </FormLabel>
+                        <Input
+                          {...field}
+                          id="requirements"
+                          placeholder="Requirements"
+                        />
+                        <FormErrorMessage>
+                          {form.errors.requirements}
+                        </FormErrorMessage>
                       </FormControl>
                     )}
                   </Field>
-                    <Button type="submit" colorScheme="green" mr={3} isLoading={props.isSubmitting} >
-                      Create
-                    </Button>
-                    <Button variant="ghost" onClick={onClose}>
-                      Close
-                    </Button>
-                  </Form>
-                )}
+                  <Button
+                    type="submit"
+                    colorScheme="green"
+                    mr={3}
+                    isLoading={props.isSubmitting}
+                  >
+                    Create
+                  </Button>
+                  <Button variant="ghost" onClick={onClose}>
+                    Close
+                  </Button>
+                </Form>
+              )}
             </Formik>
-              {/* <FormControl>
+            {/* <FormControl>
                 <FormLabel htmlFor="title">Title</FormLabel>
                 <Input
                   id="title"
@@ -175,9 +238,9 @@ function CreateBounty() {
                   onChange={(e) => setRequirements(e?.target?.value)}
                 />
               </FormControl> */}
-            </ModalBody>
+          </ModalBody>
 
-            {/* <ModalFooter>
+          {/* <ModalFooter>
               <Input type="submit" colorScheme="green" mr={3}>
                 Create
               </Input>
