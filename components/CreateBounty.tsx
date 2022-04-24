@@ -192,7 +192,7 @@ function CreateBounty() {
                               : () => {}
                           }
                         >
-                          Create
+                          Upload
                         </Button>
                         <Box mt="18px" />
                         <img id="target" src={image} />
