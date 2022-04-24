@@ -128,7 +128,7 @@ export async function initializeOpenlogin(
   // for localhost you can pass any string as clientId
   const sdkInstance = new OpenLogin({
     clientId:
-      "BFxYFZ3I46rXdWHUD0tiiZWsw5e9jmFg7_4-2UHKuPRPQEYXUBXwyCPUGu6DPME1CmTBRtUp2WWXQ2EXJt15wa8", // your project id
+      "BNUVX4js5nuZXBqSHcAKPd0yKz1KRKFmSYpyh_M7gaQ0F45hmENmdNaydhSV1fq5B6qXsl7sRgB0GlV1Q-zZaPM", // your project id
     network: "testnet",
   });
 
