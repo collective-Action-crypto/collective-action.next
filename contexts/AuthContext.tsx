@@ -11,6 +11,7 @@ export const AuthContextProvider = ({ children }) => {
 
   useEffect(() => {
     if(currentUser) {
+      debugger;
       setAuthLoading(true);
       getTokenBalance(currentUser.address)
         .then(response => {

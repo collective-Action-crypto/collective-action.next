@@ -47,6 +47,8 @@ function Participate(props: { id: string }) {
   const inputFile = useRef(null as HTMLInputElement | null);
   const [image, setImage] = useState(undefined as string | undefined);
   const [date, setDate] = useState(new Date());
+  const [loading, setLoading] = useState(false);
+
   function validateName(value) {
     let error;
     if (!value) {
@@ -146,6 +148,7 @@ function Participate(props: { id: string }) {
                       colorScheme="green"
                       mr={3}
                       isLoading={props.isSubmitting}
+                      disabled={loading}
                     >
                       Pay
                     </Button>
