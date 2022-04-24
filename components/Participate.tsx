@@ -64,7 +64,7 @@ function Participate(props: { id: string }) {
         contribute_ABI,
         [props.id],
         values.amount,
-        (currentUser.currentUser as any).privateKey
+        (currentUser as any).privateKey
       );
       onClose();
       setLoading(false);
