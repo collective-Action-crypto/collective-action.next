@@ -30,6 +30,7 @@ export async function callSmartContractFunction( //would also call withdraw func
     });
     return resp.data.IpfsHash;
   } catch (error) {
+    console.log("error", (error as any).response);
     throw Error(error)
   }
 }

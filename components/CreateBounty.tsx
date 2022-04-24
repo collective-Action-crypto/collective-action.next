@@ -85,7 +85,7 @@ function CreateBounty() {
         createABI,
         //Actions.abi,
         [
-          (date.getTime() / 1000).toString(),
+          Math.floor(date.getTime() / 1000).toString(),
           ethers.utils.parseEther(STAKE_AMOUNT).toString(),
           imageCid,
           textCid,
