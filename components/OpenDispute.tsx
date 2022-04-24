@@ -27,7 +27,7 @@ import { ethers } from "ethers";
 import { toast } from "react-toastify";
 
 const STAKE_AMOUNT = "0.1";
-function OpenDispute() {
+function OpenDispute({ id, proofIndex }) {
   const currentUser = useContext(AuthContext);
   console.log("fnr", process.env.STAKE_AMOUNT);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -43,37 +43,19 @@ function OpenDispute() {
     }
     return error;
   }
-  const createABI = {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_endDate",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "_stakeAmount",
-        type: "uint256",
-      },
-      {
-        internalType: "string",
-        name: "_image",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "_metadata",
-        type: "string",
-      },
-    ],
-    name: "createAction",
-    outputs: [],
-    stateMutability: "payable",
-    type: "function",
-  };
+
   const handleSubmit = async (values) => {
     setLoading(true);
     try {
+      const imageCid = await pushToIPFS(await loadFile(image as string));
+      debugger;
+      await callSmartContractFunction(
+        "openDispute",
+        Actions.abi.filter(el => el.name === "openDispute")[0],
+        [id, proofIndex, imageCid],
+        "0.1",
+        (currentUser.currentUser as any).privateKey
+      );
       toast.success('Dispute created successfully');
       onClose();
       setLoading(false);
@@ -121,7 +103,6 @@ function OpenDispute() {
           <ModalBody>
             <Formik
               initialValues={{
-                description: "",
                 image: "",
               }}
               onSubmit={(values, actions) => {
@@ -131,18 +112,6 @@ function OpenDispute() {
             >
               {(props) => (
                 <Form>
-                  <Field name="description" validate={validateName}>
-                    {({ field, form }) => (
-                      <FormControl
-                        isInvalid={form.errors.description && form.touched.description}
-                      >
-                        <FormLabel htmlFor="description">Dispute Description</FormLabel>
-                        <Textarea {...field} id="description" placeholder="Description" />
-                        <FormErrorMessage>{form.errors.description}</FormErrorMessage>
-                      </FormControl>
-                    )}
-                  </Field>
-                  <Box mt="12px" />
                   <Field name="image">
                     {({ field, form }) => (
                       <FormControl

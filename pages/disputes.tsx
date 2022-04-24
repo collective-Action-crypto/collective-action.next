@@ -27,15 +27,19 @@ const Dispute: NextPage = () => {
   const currentUser = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const [disputes, setDisputes] = useState(undefined as dispute[] | undefined);
-  console.log("currUser", currentUser);
+
   useEffect(() => {
     getListOfDisputes(
       currentUser.currentUser && (currentUser.currentUser as any).address
     ).then((disputes) => {
+      debugger;
       setDisputes(disputes as dispute[]);
       setLoading(false);
+    }).catch(err => {
+      debugger;
     });
-  }, [currentUser.currentUser && (currentUser.currentUser as any).address]);
+  }, []);
+
   if (!loading) {
     return (
       <>
@@ -86,7 +90,8 @@ const Dispute: NextPage = () => {
               </Thead>
               <Tbody>
                 {disputes
-                  ? disputes.map((dispute, index) => (
+                  ? disputes.map((dispute, index) => {
+                    return (
                       <Tr key={index}>
                         <Td fontWeight="400" fontSize="14px" lineHeight="17px">
                           {index}
@@ -95,10 +100,10 @@ const Dispute: NextPage = () => {
                           {dispute.creator}
                         </Td>
                         <Td color={"#598CF4"}>
-                          <Link>{`https://ipfs.io/ipfs/${dispute.forProof}`}</Link>
+                          <a target="_blank" href={`https://ipfs.io/ipfs/${dispute.forProof}`} rel="noopener noreferrer">View Proof</a>
                         </Td>
                         <Td color={"#598CF4"}>
-                          <Link>{`https://ipfs.io/ipfs/${dispute.disputeProof}`}</Link>
+                          <a target="_blank" href={`https://ipfs.io/ipfs/${dispute.disputeProof}`} rel="noopener noreferrer">View Proof</a>
                         </Td>
                         {dispute.alreadyVoted && currentUser.currentUser ? (
                           <Td isNumeric>
@@ -128,13 +133,14 @@ const Dispute: NextPage = () => {
                             fontWeight="400"
                             fontSize="14px"
                             lineHeight="17px"
+                            isNumeric
                           >
-                            {dispute.forVotes}:{dispute.againstVotes}
-                            (For:Against)
+                            {`${dispute.forVotes.toString()} (Submitter) : ${dispute.againstVotes.toString()} (Disputer)`}
                           </Td>
                         )}
                       </Tr>
-                    ))
+                    )
+                  })
                   : null}
               </Tbody>
             </Table>
