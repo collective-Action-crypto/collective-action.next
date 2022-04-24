@@ -39,6 +39,7 @@ export async function pushToIPFS(file: string | Blob) {
   try {
     const url = `https://api-eu1.tatum.io/v3/ipfs`;
     let data = new FormData();
+    data.append("file", file);
     const resp = await axios.post(url, data, {
       headers: {
         "content-type": "application/json",

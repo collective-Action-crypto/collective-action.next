@@ -26,6 +26,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import { ethers } from "ethers";
 import { contract } from "../util/ethers";
 import { toast } from "react-toastify";
+// import { useRouter } from "next/router";
 
 const STAKE_AMOUNT = "0.01";
 const claim_Abi = {
@@ -52,6 +53,7 @@ function SubmitClaim({ id }) {
   const inputFile = useRef(null as HTMLInputElement | null);
   const [image, setImage] = useState(undefined as string | undefined);
   const [loading, setLoading] = useState(false);
+  // const router = useRouter();
 
   function validateName(value) {
     let error;
@@ -76,6 +78,7 @@ function SubmitClaim({ id }) {
       );
       setLoading(false);
       onClose();
+      // router.reload(window.location.pathname);
     } catch (err) {
       setLoading(false);
       throw Error('Error');

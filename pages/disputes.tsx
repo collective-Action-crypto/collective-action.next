@@ -24,6 +24,8 @@ import { getListOfDisputes } from "../util/ethers";
 import { AuthContext } from "../contexts/AuthContext";
 import { callSmartContractFunction } from "../util/tatum";
 import { ethers } from "ethers";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 const vote_abi = {
   inputs: [
     {
@@ -54,6 +56,10 @@ const Dispute: NextPage = () => {
 
   useEffect(() => {
     if(!currentUser) return;
+    getDisputes();
+  }, [currentUser]);
+
+  const getDisputes = () => {
     getListOfDisputes(
       currentUser && (currentUser as any).address
     ).then((disputes) => {
@@ -62,7 +68,50 @@ const Dispute: NextPage = () => {
     }).catch(err => {
       throw Error('Error getting disputes');
     });
-  }, [currentUser]);
+  }
+
+  const voteForSubmitter = (dispute) => {
+    toast.promise(async () => {
+      await callSmartContractFunction(
+        "vote",
+        vote_abi,
+        [
+          dispute.action.toString(),
+          dispute.disputeId.toString(),
+          "false",
+        ],
+        "0",
+        (currentUser as any).privateKey
+      )
+      getDisputes();
+    }, {
+      pending: "Interacting with contract",
+      success: "Success!",
+      error: "Error",
+    });
+    
+  };
+
+  const voteForDisputer = (dispute) => {
+    toast.promise(async () => {
+      await callSmartContractFunction(
+        "vote",
+        vote_abi,
+        [
+          dispute.action.toString(),
+          dispute.disputeId.toString(),
+          "true",
+        ],
+        "0",
+        (currentUser as any).privateKey
+      )
+      getDisputes();
+    }, {
+      pending: "Interacting with contract",
+      success: "Success!",
+      error: "Error",
+    });
+  }
 
   if (!loading) {
     return (
@@ -157,19 +206,7 @@ const Dispute: NextPage = () => {
                                 lineHeight="17px"
                                 borderRadius="16px"
                                 variant="ghost"
-                                onClick={() =>
-                                  callSmartContractFunction(
-                                    "vote",
-                                    vote_abi,
-                                    [
-                                      dispute.action.toString(),
-                                      dispute.disputeId.toString(),
-                                      "false",
-                                    ],
-                                    "0",
-                                    (currentUser as any).privateKey
-                                  )
-                                }
+                                onClick={() => voteForSubmitter(dispute)}
                               >
                                 Submitter
                               </Button>
@@ -179,19 +216,7 @@ const Dispute: NextPage = () => {
                                 lineHeight="17px"
                                 borderRadius="16px"
                                 variant="ghost"
-                                onClick={() =>
-                                  callSmartContractFunction(
-                                    "vote",
-                                    vote_abi,
-                                    [
-                                      dispute.action.toString(),
-                                      dispute.disputeId.toString(),
-                                      "true",
-                                    ],
-                                    "0",
-                                    (currentUser as any).privateKey
-                                  )
-                                }
+                                onClick={() => voteForDisputer(dispute)}
                               >
                                 Disputer
                               </Button>
