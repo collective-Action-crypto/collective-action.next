@@ -139,14 +139,7 @@ function SubmitClaim({ id }) {
                         />
                         {/*<Input {...field} id="image" placeholder="Image" />*/}
                         <Button
-                          onClick={
-                            inputFile.current
-                              ? (e) =>
-                                  (
-                                    inputFile.current as HTMLInputElement
-                                  ).click()
-                              : () => {}
-                          }
+                          onClick={(e) => (inputFile.current as HTMLInputElement).click()}
                         >
                           Upload
                         </Button>
