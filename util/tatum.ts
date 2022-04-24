@@ -50,6 +50,7 @@ export async function pushToIPFS(file: string | Blob) {
   return resp.data.ipfsHash as string;
 }
 export async function getFromIPFS(cid: string) {
+  console.log("nifkmfe", cid);
   const url = `https://api-eu1.tatum.io/v3/ipfs/${cid}`;
   const response = await axios.get(url);
   return response.data;

@@ -33,13 +33,14 @@ export async function getListOfActions() {
   console.log("jenkm", size);
   for (let i = 0; i < size; i++) {
     const action = await contract.actions(i);
+    console.log("unkefm", action);
     const metadata = await getFromIPFS(action.metadata);
     actions.push({
       creator: action.creator,
       endDate: action.endDate,
       disputePeriodEnd: action.disputePeriodEnd,
       stakeAmount: action.stakeAmount,
-      image: "https://ipfs.io/ipfs" + action.image,
+      image: "https://ipfs.io/ipfs/" + action.image,
       title: metadata.title,
       description: metadata.description,
       requirements: metadata.requirements,
