@@ -11,8 +11,6 @@ export async function callSmartContractFunction( //would also call withdraw func
   amount: string,
   privateKey: string
 ) {
-  console.log("budj", ethers.utils.parseEther(amount).toString());
-
   const data = {
     contractAddress: ACTIONS_CONTRACT_ADDRESS,
     methodName: methodName,
@@ -21,7 +19,7 @@ export async function callSmartContractFunction( //would also call withdraw func
     amount: amount,
     fromPrivateKey: privateKey,
   };
-  console.log("wtf", params);
+
   const url = `https://api-eu1.tatum.io/v3/polygon/smartcontract`;
   try {
     const resp = await axios.post(url, data, {
@@ -30,26 +28,27 @@ export async function callSmartContractFunction( //would also call withdraw func
         "x-api-key": API_KEY,
       },
     });
-    console.log(resp.data.txId);
     return resp.data.IpfsHash;
   } catch (error) {
-    console.log("errorrr", (error as any).response);
+    throw Error(error)
   }
 }
 
 export async function pushToIPFS(file: string | Blob) {
   //https://blog.tatum.io/tatum-partners-with-nft-storage-to-offer-free-ipfs-storage-for-nfts-to-developers-183dad64e79d
-  const url = `https://api-eu1.tatum.io/v3/ipfs`;
-  let data = new FormData();
-  data.append("file", file);
-  const resp = await axios.post(url, data, {
-    headers: {
-      "content-type": "application/json",
-      "x-api-key": API_KEY,
-    },
-  });
-  console.log("infr", resp.data);
-  return resp.data.ipfsHash as string;
+  try {
+    const url = `https://api-eu1.tatum.io/v3/ipfs`;
+    let data = new FormData();
+    const resp = await axios.post(url, data, {
+      headers: {
+        "content-type": "application/json",
+        "x-api-key": API_KEY,
+      },
+    });
+    return resp.data.ipfsHash as string;
+  } catch(error) {
+    throw Error(error)
+  }
 }
 
 export async function getFromIPFS(cid: string) {

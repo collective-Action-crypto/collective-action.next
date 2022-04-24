@@ -48,23 +48,21 @@ const vote_abi = {
   type: "function",
 };
 const Dispute: NextPage = () => {
-  const currentUser = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const [disputes, setDisputes] = useState(undefined as dispute[] | undefined);
 
   useEffect(() => {
     getListOfDisputes(
-      currentUser.currentUser && (currentUser.currentUser as any).address
-    )
-      .then((disputes) => {
-        debugger;
-        setDisputes(disputes as dispute[]);
-        setLoading(false);
-      })
-      .catch((err) => {
-        debugger;
-      });
+      currentUser && (currentUser as any).address
+    ).then((disputes) => {
+      setDisputes(disputes as dispute[]);
+      setLoading(false);
+    }).catch(err => {
+      throw Error('Error getting disputes');
+    });
   }, []);
+
   if (!loading) {
     return (
       <>
@@ -150,7 +148,7 @@ const Dispute: NextPage = () => {
                               View Proof
                             </a>
                           </Td>
-                          {!dispute.alreadyVoted && currentUser.currentUser ? (
+                          {!dispute.alreadyVoted && currentUser ? (
                             <Td isNumeric>
                               <Button
                                 fontWeight="500"
@@ -168,7 +166,7 @@ const Dispute: NextPage = () => {
                                       "false",
                                     ],
                                     "0",
-                                    (currentUser.currentUser as any).privateKey
+                                    (currentUser as any).privateKey
                                   )
                                 }
                               >
@@ -190,7 +188,7 @@ const Dispute: NextPage = () => {
                                       "true",
                                     ],
                                     "0",
-                                    (currentUser.currentUser as any).privateKey
+                                    (currentUser as any).privateKey
                                   )
                                 }
                               >
