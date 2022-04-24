@@ -132,7 +132,7 @@ function CreateBounty() {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Create Bounty</ModalHeader>
+          <ModalHeader>Create Action</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Formik
@@ -299,7 +299,7 @@ function CreateBounty() {
                       isLoading={props.isSubmitting}
                       disabled={loading}
                     >
-                      Create Bounty
+                      Create Action
                     </Button>
                     <Button variant="ghost" onClick={onClose}>
                       Close
