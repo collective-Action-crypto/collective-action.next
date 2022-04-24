@@ -205,7 +205,7 @@ function CreateBounty() {
                               : () => {}
                           }
                         >
-                          Create
+                          Upload
                         </Button>
                         <Box mt="18px" />
                         <img id="target" src={image} />
@@ -307,66 +307,7 @@ function CreateBounty() {
                 </Form>
               )}
             </Formik>
-            {/* <FormControl>
-                <FormLabel htmlFor="title">Title</FormLabel>
-                <Input
-                  id="title"
-                  type="text"
-                  value={title}
-                  onChange={(e) => setTitle(e?.target?.value)}
-                />
-
-                <FormLabel htmlFor="title">Description</FormLabel>
-                <Input
-                  id="description"
-                  type="text"
-                  value={description}
-                  onChange={(e) => setDescription(e?.target?.value)}
-                />
-
-                <FormLabel htmlFor="title">Image</FormLabel>
-                <Input
-                  type="file"
-                  id="file"
-                  ref={inputFile}
-                  style={{ display: "none" }}
-                  accept="image/*"
-                />
-                <Button
-                  onClick={
-                    inputFile.current
-                      ? (e) => (inputFile.current as HTMLInputElement).click()
-                      : () => {}
-                  }
-                >
-                  Create
-                </Button>
-                <FormLabel htmlFor="title">Cut off date</FormLabel>
-                <Input
-                  id="cutOffDate"
-                  type="text"
-                  value={cutOffDate}
-                  onChange={(e) => setCutOffDate(e?.target?.value)}
-                />
-
-                <FormLabel htmlFor="title">Requirements</FormLabel>
-                <Input
-                  id="requirements"
-                  type="text"
-                  value={requirements}
-                  onChange={(e) => setRequirements(e?.target?.value)}
-                />
-              </FormControl> */}
           </ModalBody>
-
-          {/* <ModalFooter>
-                <Input type="submit" colorScheme="green" mr={3}>
-                Create
-              </Input>
-              <Button variant="ghost" onClick={onClose}>
-                Close
-              </Button>
-            </ModalFooter> */}
         </ModalContent>
       </Modal>
     </>

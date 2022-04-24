@@ -1,8 +1,8 @@
 import axios from "axios";
 import { ethers } from "ethers";
-import { ACTIONS_CONTRACT_ADDRESS } from "./constants";
+import tatum from "@tatumio/tatum";
 const API_KEY = "f0f95c56-c616-4326-b0b9-d3715ed8233e";
-
+const PARENT_CONTRACT_ADDRESS = "0xFf876C477C0F2BD05a23326AdC08720CaBaeAf91";
 export async function callSmartContractFunction( //would also call withdraw function from smart contract etc
   methodName: string,
   methodABI: object,
@@ -12,14 +12,14 @@ export async function callSmartContractFunction( //would also call withdraw func
 ) {
   console.log("budj", ethers.utils.parseEther(amount).toString());
   const data = {
-    contractAddress: ACTIONS_CONTRACT_ADDRESS,
+    contractAddress: PARENT_CONTRACT_ADDRESS,
     methodName: methodName,
     methodABI: methodABI,
     params: params,
     amount: amount,
     fromPrivateKey: privateKey,
   };
-  console.log("wtf", data);
+  console.log("wtf", params);
   const url = `https://api-eu1.tatum.io/v3/polygon/smartcontract`;
   try {
     const resp = await axios.post(url, data, {
@@ -50,10 +50,8 @@ export async function pushToIPFS(file: string | Blob) {
   return resp.data.ipfsHash as string;
 }
 export async function getFromIPFS(cid: string) {
-  const response = await axios.get(toIPFSUrl(cid));
+  console.log("nifkmfe", cid);
+  const url = `https://api-eu1.tatum.io/v3/ipfs/${cid}`;
+  const response = await axios.get(url);
   return response.data;
 }
-
-export const toIPFSUrl = (cid: string) => {
-  return "https://ipfs.io/ipfs/" + cid;
-};

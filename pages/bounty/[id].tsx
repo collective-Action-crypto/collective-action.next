@@ -21,7 +21,7 @@ import colors from "../../theme/colors";
 import { truncateWallet } from "../../util/truncateWallet";
 import { getAction, getSubmissions } from "../../util/ethers";
 import { BigNumber, ethers } from "ethers";
-import { getFromIPFS, toIPFSUrl } from "../../util/tatum";
+import { getFromIPFS } from "../../util/tatum";
 
 const Bounty = () => {
   const router = useRouter();
@@ -68,7 +68,7 @@ const Bounty = () => {
       setAction({
         title: data.title,
         description: data.description,
-        image: toIPFSUrl(a.image),
+        image: "https://ipfs.io/ipfs/" + a.image,
         amount: ethers.utils.formatEther(a.amount),
         eligibleSubmittersCount: a.eligibleSubmittersCount.toString(),
         status: a.settled

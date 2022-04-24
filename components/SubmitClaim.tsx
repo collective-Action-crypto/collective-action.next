@@ -28,7 +28,24 @@ import { contract } from "../util/ethers";
 import { toast } from "react-toastify";
 
 const STAKE_AMOUNT = "0.1";
-
+const claim_Abi = {
+  inputs: [
+    {
+      internalType: "uint256",
+      name: "actionId",
+      type: "uint256",
+    },
+    {
+      internalType: "string",
+      name: "proof",
+      type: "string",
+    },
+  ],
+  name: "submitProof",
+  outputs: [],
+  stateMutability: "payable",
+  type: "function",
+};
 function SubmitClaim({ id }) {
   const currentUser = useContext(AuthContext);
   console.log("fnr", process.env.STAKE_AMOUNT);
@@ -51,9 +68,9 @@ function SubmitClaim({ id }) {
 
       await callSmartContractFunction(
         "submitProof",
-        Actions.abi,
+        claim_Abi,
         [id, imageCid],
-        action.stakeAmount.toString(),
+        "0.1",
         (currentUser.currentUser as any).privateKey
       );
       toast.success('Dispute created successfully');
@@ -61,7 +78,6 @@ function SubmitClaim({ id }) {
     } catch(err) {
       toast.error('Error creating dispute');
     }
-    
   };
   const onImageChange = (event: any) => {
     if (event.target.files && event.target.files[0]) {

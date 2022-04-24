@@ -2,7 +2,7 @@ import { BigNumber, ethers } from "ethers";
 import ActionABI from "../artifacts/contracts/Actions.sol/Actions.json";
 import CoActTokenABI from "../artifacts/contracts/CoActToken.sol/CoActToken.json";
 import { Actions, CoActToken } from "../artifacts/contracts/types";
-import { getFromIPFS, toIPFSUrl } from "./tatum";
+import { getFromIPFS } from "./tatum";
 import { ACTIONS_CONTRACT_ADDRESS, TOKEN_CONTRACT_ADDRESS } from "./constants";
 
 const provider = new ethers.providers.AlchemyProvider(
@@ -30,15 +30,17 @@ export async function getListOfActions() {
   const actions = [] as object[];
 
   const size = (await contract.actionIndex()).toNumber();
+  console.log("jenkm", size);
   for (let i = 0; i < size; i++) {
     const action = await contract.actions(i);
+    console.log("unkefm", action);
     const metadata = await getFromIPFS(action.metadata);
     actions.push({
       creator: action.creator,
       endDate: action.endDate,
       disputePeriodEnd: action.disputePeriodEnd,
       stakeAmount: action.stakeAmount,
-      image: toIPFSUrl(action.image),
+      image: "https://ipfs.io/ipfs/" + action.image,
       title: metadata.title,
       description: metadata.description,
       requirements: metadata.requirements,
