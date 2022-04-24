@@ -22,6 +22,7 @@ import { createBlobFromObject, loadFile } from "../util/helper";
 import { callSmartContractFunction, pushToIPFS } from "../util/tatum";
 import { AuthContext } from "../contexts/AuthContext";
 import { ethers } from "ethers";
+import { toast } from "react-toastify";
 const STAKE_AMOUNT = "0.1";
 function CreateBounty() {
   const currentUser = useContext(AuthContext);
@@ -30,6 +31,7 @@ function CreateBounty() {
   const inputFile = useRef(null as HTMLInputElement | null);
   const [image, setImage] = useState(undefined as string | undefined);
   const [date, setDate] = useState(new Date());
+
   function validateName(value) {
     let error;
     if (!value) {
@@ -66,17 +68,16 @@ function CreateBounty() {
     type: "function",
   };
   const handleSubmit = async (values) => {
-    console.log("moin", currentUser.currentUser as any);
-    const textCid = await pushToIPFS(
-      await createBlobFromObject({
-        title: values.title,
-        description: values.description,
-        requirements: values.requirements,
-      })
-    );
+    try {
+      const textCid = await pushToIPFS(
+        await createBlobFromObject({
+          title: values.title,
+          description: values.description,
+          requirements: values.requirements,
+        })
+      );
     const imageCid = await pushToIPFS(await loadFile(image as string));
-    console.log("ufb4en", date);
-    callSmartContractFunction(
+    await callSmartContractFunction(
       "createAction",
       createABI,
       //Actions.abi,
@@ -89,6 +90,12 @@ function CreateBounty() {
       values.prizePoolSize,
       (currentUser.currentUser as any).privateKey
     );
+    toast.success('Dispute created successfully');
+    onClose();
+
+    } catch(err) {
+      toast.error('Error creating dispute');
+    }
   };
   const onImageChange = (event: any) => {
     if (event.target.files && event.target.files[0]) {
