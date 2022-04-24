@@ -11,6 +11,15 @@ import { Box, Button, CircularProgress, Link, Text } from '@chakra-ui/react';
 import Logo from "../assets/icons/Logo";
 import { useRouter } from "next/router";
 import colors from "../theme/colors";
+import WalletConnect from "@walletconnect/client";
+import QRCodeModal from "@walletconnect/qrcode-modal";
+
+// Create a connector
+const connector = new WalletConnect({
+  bridge: "https://bridge.walletconnect.org", // Required
+  qrcodeModal: QRCodeModal,
+});
+
 
 const Header = () => {
   const router = useRouter();
@@ -24,6 +33,41 @@ const Header = () => {
     setAuthLoading(true);
     initializeOpenlogin(level, setCurrentUser, setSdk, setAuthLoading);
   }, [level]);
+
+  const handleLogin = () => {
+    // Check if connection is already established
+    if (!connector.connected) {
+      // create new session
+      connector.createSession();
+    }
+    
+    // Subscribe to connection events
+    connector.on("connect", (error, payload) => {
+      if (error) {
+        throw error;
+      }
+    
+      // Get provided accounts and chainId
+      const { accounts, chainId } = payload.params[0];
+    });
+    
+    connector.on("session_update", (error, payload) => {
+      if (error) {
+        throw error;
+      }
+    
+      // Get updated accounts and chainId
+      const { accounts, chainId } = payload.params[0];
+    });
+    
+    connector.on("disconnect", (error, payload) => {
+      if (error) {
+        throw error;
+      }
+    
+      // Delete connector
+    });
+  }
 
   return (
     <>
@@ -65,7 +109,10 @@ const Header = () => {
                 setCurrentUser(undefined);
                 router.push('/');
               }}>Logout</Button></Box>
-              : <Box width="110px"><Button fontSize="14px" lineHeight="17px" width="110px" colorScheme="green" borderRadius="16px" onClick={() => handleLogin(openlogin as object, setAuthLoading, level, setCurrentUser)}>Login</Button></Box>
+              : <Box width="110px"><Button fontSize="14px" lineHeight="17px" width="110px" colorScheme="green" borderRadius="16px" onClick={() => {
+                // handleLogin(openlogin as object, setAuthLoading, level, setCurrentUser)
+                handleLogin();
+              }}>Login</Button></Box>
           }
         </Box>
       </Box>

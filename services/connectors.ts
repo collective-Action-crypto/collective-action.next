@@ -2,7 +2,7 @@ import { InjectedConnector } from "@web3-react/injected-connector";
 import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
 import { WalletLinkConnector } from "@web3-react/walletlink-connector";
 
-const INFURA_KEY = 'ce5e14e92a414e679842bc19fd28777f';
+const INFURA_KEY = "ce5e14e92a414e679842bc19fd28777f";
 
 const injected = new InjectedConnector({
   supportedChainIds: [1, 3, 4, 5, 42]
