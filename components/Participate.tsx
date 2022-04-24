@@ -56,7 +56,7 @@ function Participate(props: { id: string }) {
     return error;
   }
 
-  const submit = async () => {
+  const submit = async (values) => {
     setLoading(true);
     try {
       await callSmartContractFunction(
@@ -75,7 +75,7 @@ function Participate(props: { id: string }) {
   }
 
   const handleSubmit = async (values) => {
-    toast.promise(submit, {
+    toast.promise(() => submit(values), {
       pending: "Interacting with contract",
       success: "Success!",
       error: "Error",

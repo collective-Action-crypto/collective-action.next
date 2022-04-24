@@ -23,6 +23,7 @@ import { callSmartContractFunction, pushToIPFS } from "../util/tatum";
 import { AuthContext } from "../contexts/AuthContext";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
+import { useRouter } from 'next/router'
 
 const STAKE_AMOUNT = "0.01";
 function CreateBounty() {
@@ -32,6 +33,7 @@ function CreateBounty() {
   const [image, setImage] = useState(undefined as string | undefined);
   const [date, setDate] = useState(new Date());
   const [loading, setLoading] = useState(false);
+  const router = useRouter()
 
   function validateName(value) {
     let error;
@@ -69,7 +71,7 @@ function CreateBounty() {
     type: "function",
   };
 
-  const submit = async () => {
+  const submit = async (values) => {
     setLoading(true);
     try {
       const textCid = await pushToIPFS(
@@ -96,14 +98,16 @@ function CreateBounty() {
 
       onClose();
       setLoading(false);
+      router.reload(window.location.pathname);
     } catch (err) {
+      console.log(err);
       setLoading(false);
       throw Error('Error');
     }
   }
 
   const handleSubmit = async (values) => {
-    toast.promise(submit, {
+    toast.promise(() => submit(values), {
       pending: "Interacting with contract",
       success: "Success!",
       error: "Error",
