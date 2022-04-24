@@ -23,6 +23,7 @@ import { dispute } from "../util/helper";
 import { getListOfDisputes } from "../util/ethers";
 import { AuthContext } from "../contexts/AuthContext";
 import { callSmartContractFunction } from "../util/tatum";
+import { ethers } from "ethers";
 const vote_abi = {
   inputs: [
     {
@@ -203,7 +204,11 @@ const Dispute: NextPage = () => {
                               lineHeight="17px"
                               isNumeric
                             >
-                              {`${dispute.forVotes.toString()} (Submitter) : ${dispute.againstVotes.toString()} (Disputer)`}
+                              {`${ethers.utils
+                                .formatEther(dispute.forVotes)
+                                .toString()} (Submitter) : ${ethers.utils
+                                .formatEther(dispute.againstVotes)
+                                .toString()} (Disputer)`}
                             </Td>
                           )}
                         </Tr>
