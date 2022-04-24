@@ -191,7 +191,7 @@ const Bounty = () => {
             <Box mt="16px" display="flex" justifyContent="space-between">
               <Box>
                 <Text fontSize="16px" lineHeight="19px">
-                  {action.daysLeft} {action.daysLeft == 1 ? "day" : "days"} left
+                  {action.daysLeft > 0 ? `${action.daysLeft} ${action.daysLeft == 1 ? "day" : "days"} left` : `Completed`}
                 </Text>
               </Box>
               <Box display="flex">

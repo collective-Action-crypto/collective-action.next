@@ -14,11 +14,10 @@ const Card = ({ id, title, description, imageUrl, walletAddress, participantsCou
         <Image src={imageUrl} alt='' />
         <Box display="flex" position="relative" bottom="120px" ml="10px">
           <Box py="6px" px="12px" color={colors.neutral_600} backgroundColor="white" borderRadius="24px">
-            <Text fontWeight="400" fontSize="12px" lineHeight="14px">{daysLeft} days left</Text>
+            <Text fontWeight="400" fontSize="12px" lineHeight="14px">{daysLeft >= 0 ? `${daysLeft} days left` : 'Completed'}</Text>
           </Box>
         </Box>
       </Box>
-      
 
       {/* Profile */}
       <Box mt="24px" display="flex">
