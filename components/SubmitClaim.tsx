@@ -25,6 +25,8 @@ import Actions from "../artifacts/contracts/Actions.sol/Actions.json";
 import { AuthContext } from "../contexts/AuthContext";
 import { ethers } from "ethers";
 import { contract } from "../util/ethers";
+import { toast } from "react-toastify";
+
 const STAKE_AMOUNT = "0.1";
 const claim_Abi = {
   inputs: [
@@ -60,16 +62,21 @@ function SubmitClaim({ id }) {
   }
 
   const handleSubmit = async (values) => {
-    const imageCid = await pushToIPFS(await loadFile(image as string));
-    const action = await contract.actions(id);
+    try {
+      const imageCid = await pushToIPFS(await loadFile(image as string));
+      const action = await contract.actions(id);
 
-    callSmartContractFunction(
-      "submitProof",
-      claim_Abi,
-      [id, imageCid],
-      "0.1",
-      (currentUser.currentUser as any).privateKey
-    );
+      callSmartContractFunction(
+        "submitProof",
+        claim_Abi,
+        [id, imageCid],
+        "0.1",
+        (currentUser.currentUser as any).privateKey
+      );
+      toast.success("Dispute created successfully");
+    } catch (err) {
+      toast.error("Error creating dispute");
+    }
   };
   const onImageChange = (event: any) => {
     if (event.target.files && event.target.files[0]) {
@@ -99,7 +106,6 @@ function SubmitClaim({ id }) {
           <ModalBody>
             <Formik
               initialValues={{
-                description: "",
                 image: "",
               }}
               onSubmit={(values, actions) => {
@@ -109,27 +115,6 @@ function SubmitClaim({ id }) {
             >
               {(props) => (
                 <Form>
-                  <Field name="description" validate={validateName}>
-                    {({ field, form }) => (
-                      <FormControl
-                        isInvalid={
-                          form.errors.description && form.touched.description
-                        }
-                      >
-                        <FormLabel htmlFor="description">
-                          Claim Description
-                        </FormLabel>
-                        <Textarea
-                          {...field}
-                          id="description"
-                          placeholder="Description"
-                        />
-                        <FormErrorMessage>
-                          {form.errors.description}
-                        </FormErrorMessage>
-                      </FormControl>
-                    )}
-                  </Field>
                   <Box mt="12px"></Box>
                   <Field name="image">
                     {({ field, form }) => (
