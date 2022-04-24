@@ -34,6 +34,8 @@ function OpenDispute() {
   const inputFile = useRef(null as HTMLInputElement | null);
   const [image, setImage] = useState(undefined as string | undefined);
   const [date, setDate] = useState(new Date());
+  const [loading, setLoading] = useState(false);
+
   function validateName(value) {
     let error;
     if (!value) {
@@ -70,11 +72,14 @@ function OpenDispute() {
     type: "function",
   };
   const handleSubmit = async (values) => {
+    setLoading(true);
     try {
       toast.success('Dispute created successfully');
       onClose();
+      setLoading(false);
     } catch(err) {
       toast.error('Error creating dispute');
+      setLoading(false);
     }
     console.log('Submit Claim');
     // const textCid = await pushToIPFS(
@@ -178,6 +183,7 @@ function OpenDispute() {
                       colorScheme="green"
                       mr={3}
                       isLoading={props.isSubmitting}
+                      disabled={loading}
                     >
                       Open Dispute
                     </Button>

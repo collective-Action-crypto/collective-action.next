@@ -52,6 +52,7 @@ function SubmitClaim({ id }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const inputFile = useRef(null as HTMLInputElement | null);
   const [image, setImage] = useState(undefined as string | undefined);
+  const [loading, setLoading] = useState(false);
 
   function validateName(value) {
     let error;
@@ -62,6 +63,7 @@ function SubmitClaim({ id }) {
   }
 
   const handleSubmit = async (values) => {
+    setLoading(true);
     try {
       const imageCid = await pushToIPFS(await loadFile(image as string));
       const action = await contract.actions(id);
@@ -74,11 +76,14 @@ function SubmitClaim({ id }) {
         (currentUser.currentUser as any).privateKey
       );
       toast.success('Dispute created successfully');
+      setLoading(false);
       onClose();
     } catch(err) {
       toast.error('Error creating dispute');
+      setLoading(false);
     }
   };
+
   const onImageChange = (event: any) => {
     if (event.target.files && event.target.files[0]) {
       setImage(URL.createObjectURL(event.target.files[0]));
@@ -157,6 +162,7 @@ function SubmitClaim({ id }) {
                       colorScheme="green"
                       mr={3}
                       isLoading={props.isSubmitting}
+                      disabled={loading}
                     >
                       Submit Claim
                     </Button>

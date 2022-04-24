@@ -34,6 +34,8 @@ function Participate() {
   const inputFile = useRef(null as HTMLInputElement | null);
   const [image, setImage] = useState(undefined as string | undefined);
   const [date, setDate] = useState(new Date());
+  const [loading, setLoading] = useState(false);
+
   function validateName(value) {
     let error;
     if (!value) {
@@ -42,10 +44,14 @@ function Participate() {
     return error;
   }
   const handleSubmit = async (values) => {
+    setLoading(true);
     try {
       toast.success('Dispute created successfully');
+      onClose();
+      setLoading(false);
     } catch(err) {
       toast.error('Error creating dispute');
+      setLoading(false);
     }
     console.log('Participate')
     // const textCid = await pushToIPFS(
@@ -116,6 +122,7 @@ function Participate() {
                       colorScheme="green"
                       mr={3}
                       isLoading={props.isSubmitting}
+                      disabled={loading}
                     >
                       Pay
                     </Button>
