@@ -3,10 +3,11 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./interfaces/Mintable.sol";
+import "./interfaces/IAave.sol";
 
 contract Actions {
 
-    uint256 public constant ONE_WEEK_IN_SECONDS = 604800;
+    uint256 public constant TWENTY_MINUTES_IN_SECONDS = 20 * 60;
 
     struct Action {
         address creator;
@@ -43,7 +44,11 @@ contract Actions {
         mapping(address => bool) voted;
     }
 
-    address governanceToken;
+    address public immutable governanceToken;
+    address public immutable aaveAddress;
+    address public immutable lendingPoolAddress;
+
+    uint256 public depositedAmount = 0;
 
     uint256 public actionIndex = 0;
     mapping(uint256 => Action) public actions;
@@ -52,8 +57,10 @@ contract Actions {
     mapping(uint256 => Dispute[]) public disputes;
     mapping(uint256 => mapping(uint256 => Votes)) votes;
 
-    constructor(address _governanceToken) {
+    constructor(address _governanceToken, address _aaveAddress, address _lendingPoolAddress) {
         governanceToken = _governanceToken;
+        aaveAddress = _aaveAddress;
+        lendingPoolAddress = _lendingPoolAddress;
     }
 
     function createAction(
@@ -66,7 +73,7 @@ contract Actions {
         action.creator = msg.sender;
         action.creationDate = block.timestamp;
         action.endDate = _endDate;
-        action.disputePeriodEnd = _endDate + ONE_WEEK_IN_SECONDS;
+        action.disputePeriodEnd = _endDate + TWENTY_MINUTES_IN_SECONDS;
         action.stakeAmount = _stakeAmount;
         action.image = _image;
         action.metadata = _metadata;
@@ -85,7 +92,7 @@ contract Actions {
 
     function submitProof(uint256 actionId, string memory proof) public payable {
         Action storage action = actions[actionId];
-        require(block.timestamp <= action.endDate , "Can't submit a proof proof after end date");
+        require(block.timestamp <= action.endDate, "Can't submit a proof proof after end date");
         require(msg.value == action.stakeAmount, "Can't add a proof as stake amount is not valid");
         action.eligibleSubmittersCount++;
         // todo: not allow to submit proofs multiple times
@@ -106,7 +113,7 @@ contract Actions {
         dispute.creator = msg.sender;
         dispute.proofIndex = proofIndex;
         dispute.disputeProof = proof;
-        dispute.disputeEndDate = block.timestamp + ONE_WEEK_IN_SECONDS;
+        dispute.disputeEndDate = block.timestamp + TWENTY_MINUTES_IN_SECONDS;
         disputes[actionId].push(dispute);
     }
 
@@ -147,7 +154,7 @@ contract Actions {
         uint256 amountToPay = action.amount / action.eligibleSubmittersCount + action.stakeAmount;
         for (uint256 i = 0; i < actionProofs.length; i++) {
             if (!actionProofs[i].failed) {
-                payable(actionProofs[i].submitter).transfer(amountToPay);
+                _pay(amountToPay, actionProofs[i].submitter);
             }
         }
         actions[actionId].settled = true;
@@ -169,7 +176,7 @@ contract Actions {
             proof.failed = true;
             actions[actionId].eligibleSubmittersCount--;
 
-            payable(dispute.creator).transfer(2 * actions[actionId].stakeAmount);
+            _pay(2 * actions[actionId].stakeAmount, dispute.creator);
         } else {// proof submitter wins, challenger money stay with us
             dispute.settled = true;
         }
@@ -239,5 +246,33 @@ contract Actions {
         }
 
         return result;
+    }
+
+    function depositToAave() external {
+        if (address(this).balance < 1 ether) {
+            return;
+        }
+
+        uint256 toDeposit = address(this).balance - 1 ether;
+        depositedAmount += toDeposit;
+        IAave(aaveAddress).depositETH{value : toDeposit}(lendingPoolAddress, address(this), uint16(0));
+    }
+
+    function _withdrawFromAave(uint256 amount) private {
+        IAave(aaveAddress).withdrawETH(lendingPoolAddress, amount, address(this));
+        depositedAmount -= amount;
+    }
+
+    function _pay(uint256 amount, address to) private {
+        if (amount > address(this).balance) {
+            _withdrawFromAave(amount - address(this).balance + 1 ether);
+        }
+
+        payable(to).transfer(amount);
+    }
+
+    function withdrawAll() public {// todo: remove
+        _withdrawFromAave(depositedAmount);
+        payable(msg.sender).transfer(address(this).balance);
     }
 }
