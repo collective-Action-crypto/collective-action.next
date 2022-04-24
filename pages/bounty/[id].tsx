@@ -284,7 +284,7 @@ const Bounty = () => {
                         <Link target="_blank" href={toIPFSUrl(s.proof)}>{s.proof}</Link>
                       </Td>
                       <Td isNumeric>
-                        <OpenDispute />
+                        <OpenDispute id={id} proofIndex={i} />
                       </Td>
                     </Tr>
                   ))}
