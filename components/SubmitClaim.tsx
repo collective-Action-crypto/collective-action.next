@@ -26,7 +26,24 @@ import { AuthContext } from "../contexts/AuthContext";
 import { ethers } from "ethers";
 import { contract } from "../util/ethers";
 const STAKE_AMOUNT = "0.1";
-
+const claim_Abi = {
+  inputs: [
+    {
+      internalType: "uint256",
+      name: "actionId",
+      type: "uint256",
+    },
+    {
+      internalType: "string",
+      name: "proof",
+      type: "string",
+    },
+  ],
+  name: "submitProof",
+  outputs: [],
+  stateMutability: "payable",
+  type: "function",
+};
 function SubmitClaim({ id }) {
   const currentUser = useContext(AuthContext);
   console.log("fnr", process.env.STAKE_AMOUNT);
@@ -48,9 +65,9 @@ function SubmitClaim({ id }) {
 
     callSmartContractFunction(
       "submitProof",
-      Actions.abi,
+      claim_Abi,
       [id, imageCid],
-      action.stakeAmount.toString(),
+      "0.1",
       (currentUser.currentUser as any).privateKey
     );
   };
