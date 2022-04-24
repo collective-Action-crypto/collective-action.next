@@ -55,20 +55,20 @@ const Dispute: NextPage = () => {
   const [disputes, setDisputes] = useState(undefined as dispute[] | undefined);
 
   useEffect(() => {
-    if(!currentUser) return;
+    if (!currentUser) return;
     getDisputes();
   }, [currentUser]);
 
   const getDisputes = () => {
-    getListOfDisputes(
-      currentUser && (currentUser as any).address
-    ).then((disputes) => {
-      setDisputes(disputes as dispute[]);
-      setLoading(false);
-    }).catch(err => {
-      throw Error('Error getting disputes');
-    });
-  }
+    getListOfDisputes(currentUser && (currentUser as any).address)
+      .then((disputes) => {
+        setDisputes(disputes as dispute[]);
+        setLoading(false);
+      })
+      .catch((err) => {
+        throw Error("Error getting disputes");
+      });
+  };
 
   const voteForSubmitter = (dispute) => {
     toast.promise(async () => {
@@ -92,25 +92,24 @@ const Dispute: NextPage = () => {
   };
 
   const voteForDisputer = (dispute) => {
-    toast.promise(async () => {
-      await callSmartContractFunction(
-        "vote",
-        vote_abi,
-        [
-          dispute.action.toString(),
-          dispute.disputeId.toString(),
-          "true",
-        ],
-        "0",
-        (currentUser as any).privateKey
-      )
-      getDisputes();
-    }, {
-      pending: "Interacting with contract",
-      success: "Success!",
-      error: "Error",
-    });
-  }
+    toast.promise(
+      async () => {
+        await callSmartContractFunction(
+          "vote",
+          vote_abi,
+          [dispute.action.toString(), dispute.disputeId.toString(), true],
+          "0",
+          (currentUser as any).privateKey
+        );
+        getDisputes();
+      },
+      {
+        pending: "Interacting with contract",
+        success: "Success!",
+        error: "Error",
+      }
+    );
+  };
 
   if (!loading) {
     return (
