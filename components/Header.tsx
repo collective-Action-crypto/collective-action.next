@@ -11,6 +11,7 @@ import { Box, Button, CircularProgress, Link, Text } from '@chakra-ui/react';
 import Logo from "../assets/icons/Logo";
 import { useRouter } from "next/router";
 import colors from "../theme/colors";
+import { ethers } from "ethers";
 
 const Header = () => {
   const router = useRouter();
@@ -49,7 +50,7 @@ const Header = () => {
               <Button onClick={() => router.push("/disputes")} borderRadius="16px" fontSize="14px" lineHeight="17px" variant="ghost" width="110px" textAlign="center" mr="24px">Disputes</Button>
               <Box width="110px" mt="4px">
                 <Text fontSize="14px" fontWeight="300" lineHeight="17px" color={colors.neutral_400} textAlign="center">Token Balance</Text>
-                <Text fontSize="14px" fontWeight="400" lineHeight="17px" color={colors.neutral_600} textAlign="center">{`${tokenBalance} Tokens`}</Text>
+                <Text fontSize="14px" fontWeight="400" lineHeight="17px" color={colors.neutral_600} textAlign="center">{`${ethers.utils.formatEther(tokenBalance)} Tokens`}</Text>
               </Box>
             </>
           )}
