@@ -85,7 +85,7 @@ contract Actions {
 
     function submitProof(uint256 actionId, string memory proof) public payable {
         Action storage action = actions[actionId];
-        require(action.endDate > block.timestamp, "Can't submit a proof proof after end date");
+        require(block.timestamp <= action.endDate , "Can't submit a proof proof after end date");
         require(msg.value == action.stakeAmount, "Can't add a proof as stake amount is not valid");
         action.eligibleSubmittersCount++;
         // todo: not allow to submit proofs multiple times
