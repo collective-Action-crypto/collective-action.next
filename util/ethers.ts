@@ -123,7 +123,10 @@ export const getAction = async (id: BigNumber) => {
     provider
   ) as Actions;
   const action = await contract.actions(id);
-
+  console.log(
+    "ubf4neimk",
+    ethers.utils.formatEther(action.amount.toString()).toString()
+  );
   return {
     creator: action.creator,
     creationDate: action.creationDate,

@@ -12,7 +12,7 @@ import {
   useColorModePreference,
   Text,
   Box,
-  Textarea
+  Textarea,
 } from "@chakra-ui/react";
 import Datepicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -27,7 +27,20 @@ import { ethers } from "ethers";
 import { toast } from "react-toastify";
 
 const STAKE_AMOUNT = "0.1";
-function Participate() {
+const contribute_ABI = {
+  inputs: [
+    {
+      internalType: "uint256",
+      name: "actionId",
+      type: "uint256",
+    },
+  ],
+  name: "contribute",
+  outputs: [],
+  stateMutability: "payable",
+  type: "function",
+};
+function Participate(props: { id: string }) {
   const currentUser = useContext(AuthContext);
   console.log("fnr", process.env.STAKE_AMOUNT);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -42,12 +55,19 @@ function Participate() {
     return error;
   }
   const handleSubmit = async (values) => {
+    console.log("in4fn", values);
     try {
-      toast.success('Dispute created successfully');
-    } catch(err) {
-      toast.error('Error creating dispute');
+      callSmartContractFunction(
+        "contribute",
+        contribute_ABI,
+        [props.id],
+        values.amount,
+        (currentUser.currentUser as any).privateKey
+      );
+      toast.success("Contributed successfully");
+    } catch (err) {
+      toast.error("Error creating dispute");
     }
-    console.log('Participate')
     // const textCid = await pushToIPFS(
     //   await createBlobFromObject({
     //     title: values.title,
@@ -77,7 +97,15 @@ function Participate() {
   };
   return (
     <>
-      <Button fontWeight="500" fontSize="14px" lineHeight="17px" borderRadius="16px" colorScheme='green' mr={3} onClick={onOpen}>
+      <Button
+        fontWeight="500"
+        fontSize="14px"
+        lineHeight="17px"
+        borderRadius="16px"
+        colorScheme="green"
+        mr={3}
+        onClick={onOpen}
+      >
         Participate in Bounty
       </Button>
 
@@ -105,7 +133,9 @@ function Participate() {
                       >
                         <FormLabel htmlFor="amount">Amount</FormLabel>
                         <Input {...field} id="amount" placeholder="Amount" />
-                        <FormErrorMessage>{form.errors.amount}</FormErrorMessage>
+                        <FormErrorMessage>
+                          {form.errors.amount}
+                        </FormErrorMessage>
                       </FormControl>
                     )}
                   </Field>

@@ -22,6 +22,7 @@ import { truncateWallet } from "../../util/truncateWallet";
 import { getAction, getSubmissions } from "../../util/ethers";
 import { BigNumber, ethers } from "ethers";
 import { getFromIPFS } from "../../util/tatum";
+import { ProposalStage } from "@celo/contractkit/lib/wrappers/Governance";
 
 const Bounty = () => {
   const router = useRouter();
@@ -191,7 +192,7 @@ const Bounty = () => {
           </Box>
           <Box mt="24px" display="flex" justifyContent="space-between">
             <Box>
-              <Participate />
+              <Participate id={id as string} />
             </Box>
             <Box mt="5px">
               <Text
