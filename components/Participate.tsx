@@ -70,7 +70,7 @@ function Participate(props: { id: string }) {
       setLoading(false);
     } catch (err) {
       setLoading(false);
-      throw Error('Error');
+      throw Error(err);
     }
   }
 

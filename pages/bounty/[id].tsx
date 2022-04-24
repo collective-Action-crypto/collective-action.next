@@ -30,6 +30,7 @@ const Bounty = () => {
   const [action, setAction] = useState({
     title: "",
     description: "",
+    requirements: "",
     image: "",
     amount: "",
     eligibleSubmittersCount: "",
@@ -68,6 +69,7 @@ const Bounty = () => {
       setAction({
         title: data.title,
         description: data.description,
+        requirements: data.requirements,
         image: toIPFSUrl(a.image),
         amount: ethers.utils.formatEther(a.amount),
         eligibleSubmittersCount: a.eligibleSubmittersCount.toString(),
@@ -134,6 +136,30 @@ const Bounty = () => {
             >
               {action.description}
             </Text>
+          </Box>
+          <Box mt="24px" mb="32px">
+            {/* <Text
+              fontWeight="400"
+              fontSize="14px"
+              lineHeight="150%"
+              color={colors.neutral_600}
+            > */}
+              <span
+                style={{
+                  fontWeight: 800,
+                  fontSize: 14,
+                  lineHeight: "150%",
+                  color: 'black'
+                }}>Requirements: </span>
+              <span
+                style={{
+                  fontWeight: 400,
+                  fontSize: 14,
+                  lineHeight: "150%",
+                  color: colors.neutral_600
+                }}
+              >{action.requirements}</span>
+            {/* </Text> */}
           </Box>
           <Box
             py="32px"

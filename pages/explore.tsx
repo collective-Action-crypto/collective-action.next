@@ -32,8 +32,7 @@ const Explore: NextPage = () => {
         <Heading>Explore</Heading>
       </Box>
 
-      {loading ? (
-        <Box textAlign="center" mt="100px">
+      {loading ? (     <Box textAlign="center" mt="100px">
           <Spinner color="green.300" size="xl" />
         </Box>
       ) : (

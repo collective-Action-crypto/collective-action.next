@@ -89,7 +89,6 @@ const Dispute: NextPage = () => {
       success: "Success!",
       error: "Error",
     });
-    
   };
 
   const voteForDisputer = (dispute) => {

@@ -19,7 +19,6 @@ export async function callSmartContractFunction( //would also call withdraw func
     amount: amount,
     fromPrivateKey: privateKey,
   };
-
   const url = `https://api-eu1.tatum.io/v3/polygon/smartcontract`;
   try {
     const resp = await axios.post(url, data, {
