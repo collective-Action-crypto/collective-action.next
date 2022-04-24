@@ -124,7 +124,7 @@ contract Actions {
         }
     }
 
-    function settle() public {
+    function settle() external {
         for (uint256 i = 0; i < actionIndex; i++) {
             Action memory a = actions[i];
             if (a.settled) {
