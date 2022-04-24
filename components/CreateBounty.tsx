@@ -23,6 +23,7 @@ import { callSmartContractFunction, pushToIPFS } from "../util/tatum";
 import { AuthContext } from "../contexts/AuthContext";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
+
 const STAKE_AMOUNT = "0.1";
 function CreateBounty() {
   const currentUser = useContext(AuthContext);
@@ -31,6 +32,7 @@ function CreateBounty() {
   const inputFile = useRef(null as HTMLInputElement | null);
   const [image, setImage] = useState(undefined as string | undefined);
   const [date, setDate] = useState(new Date());
+  const [loading, setLoading] = useState(false);
 
   function validateName(value) {
     let error;
@@ -67,7 +69,9 @@ function CreateBounty() {
     stateMutability: "payable",
     type: "function",
   };
+
   const handleSubmit = async (values) => {
+    setLoading(true);
     try {
       const textCid = await pushToIPFS(
         await createBlobFromObject({
@@ -90,11 +94,13 @@ function CreateBounty() {
       values.prizePoolSize,
       (currentUser.currentUser as any).privateKey
     );
-    toast.success('Dispute created successfully');
-    onClose();
 
+      toast.success('Dispute created successfully');
+      onClose();
+      setLoading(false);
     } catch(err) {
       toast.error('Error creating dispute');
+      setLoading(false);
     }
   };
   const onImageChange = (event: any) => {
@@ -290,6 +296,7 @@ function CreateBounty() {
                       colorScheme="green"
                       mr={3}
                       isLoading={props.isSubmitting}
+                      disabled={loading}
                     >
                       Create Bounty
                     </Button>

@@ -57,6 +57,7 @@ function SubmitClaim({ id }) {
         (currentUser.currentUser as any).privateKey
       );
       toast.success('Dispute created successfully');
+      onClose();
     } catch(err) {
       toast.error('Error creating dispute');
     }
