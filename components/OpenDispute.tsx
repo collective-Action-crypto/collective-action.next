@@ -72,6 +72,7 @@ function OpenDispute() {
   const handleSubmit = async (values) => {
     try {
       toast.success('Dispute created successfully');
+      onClose();
     } catch(err) {
       toast.error('Error creating dispute');
     }

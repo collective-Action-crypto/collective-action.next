@@ -66,16 +66,17 @@ function SubmitClaim({ id }) {
       const imageCid = await pushToIPFS(await loadFile(image as string));
       const action = await contract.actions(id);
 
-      callSmartContractFunction(
+      await callSmartContractFunction(
         "submitProof",
         claim_Abi,
         [id, imageCid],
         "0.1",
         (currentUser.currentUser as any).privateKey
       );
-      toast.success("Dispute created successfully");
-    } catch (err) {
-      toast.error("Error creating dispute");
+      toast.success('Dispute created successfully');
+      onClose();
+    } catch(err) {
+      toast.error('Error creating dispute');
     }
   };
   const onImageChange = (event: any) => {

@@ -23,6 +23,7 @@ import { callSmartContractFunction, pushToIPFS } from "../util/tatum";
 import { AuthContext } from "../contexts/AuthContext";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
+
 const STAKE_AMOUNT = "0.1";
 function CreateBounty() {
   const currentUser = useContext(AuthContext);
@@ -31,6 +32,7 @@ function CreateBounty() {
   const inputFile = useRef(null as HTMLInputElement | null);
   const [image, setImage] = useState(undefined as string | undefined);
   const [date, setDate] = useState(new Date());
+  const [loading, setLoading] = useState(false);
 
   function validateName(value) {
     let error;
@@ -67,7 +69,9 @@ function CreateBounty() {
     stateMutability: "payable",
     type: "function",
   };
+
   const handleSubmit = async (values) => {
+    setLoading(true);
     try {
       const textCid = await pushToIPFS(
         await createBlobFromObject({
@@ -90,11 +94,13 @@ function CreateBounty() {
       values.prizePoolSize,
       (currentUser.currentUser as any).privateKey
     );
-    toast.success('Dispute created successfully');
-    onClose();
 
+      toast.success('Dispute created successfully');
+      onClose();
+      setLoading(false);
     } catch(err) {
       toast.error('Error creating dispute');
+      setLoading(false);
     }
   };
   const onImageChange = (event: any) => {
@@ -290,6 +296,7 @@ function CreateBounty() {
                       colorScheme="green"
                       mr={3}
                       isLoading={props.isSubmitting}
+                      disabled={loading}
                     >
                       Create Bounty
                     </Button>
@@ -300,66 +307,7 @@ function CreateBounty() {
                 </Form>
               )}
             </Formik>
-            {/* <FormControl>
-                <FormLabel htmlFor="title">Title</FormLabel>
-                <Input
-                  id="title"
-                  type="text"
-                  value={title}
-                  onChange={(e) => setTitle(e?.target?.value)}
-                />
-
-                <FormLabel htmlFor="title">Description</FormLabel>
-                <Input
-                  id="description"
-                  type="text"
-                  value={description}
-                  onChange={(e) => setDescription(e?.target?.value)}
-                />
-
-                <FormLabel htmlFor="title">Image</FormLabel>
-                <Input
-                  type="file"
-                  id="file"
-                  ref={inputFile}
-                  style={{ display: "none" }}
-                  accept="image/*"
-                />
-                <Button
-                  onClick={
-                    inputFile.current
-                      ? (e) => (inputFile.current as HTMLInputElement).click()
-                      : () => {}
-                  }
-                >
-                  Create
-                </Button>
-                <FormLabel htmlFor="title">Cut off date</FormLabel>
-                <Input
-                  id="cutOffDate"
-                  type="text"
-                  value={cutOffDate}
-                  onChange={(e) => setCutOffDate(e?.target?.value)}
-                />
-
-                <FormLabel htmlFor="title">Requirements</FormLabel>
-                <Input
-                  id="requirements"
-                  type="text"
-                  value={requirements}
-                  onChange={(e) => setRequirements(e?.target?.value)}
-                />
-              </FormControl> */}
           </ModalBody>
-
-          {/* <ModalFooter>
-                <Input type="submit" colorScheme="green" mr={3}>
-                Create
-              </Input>
-              <Button variant="ghost" onClick={onClose}>
-                Close
-              </Button>
-            </ModalFooter> */}
         </ModalContent>
       </Modal>
     </>
