@@ -21,8 +21,7 @@ import colors from "../../theme/colors";
 import { truncateWallet } from "../../util/truncateWallet";
 import { getAction, getSubmissions } from "../../util/ethers";
 import { BigNumber, ethers } from "ethers";
-import { getFromIPFS } from "../../util/tatum";
-import { ProposalStage } from "@celo/contractkit/lib/wrappers/Governance";
+import { getFromIPFS , toIPFSUrl} from "../../util/tatum";
 
 const Bounty = () => {
   const router = useRouter();
@@ -69,7 +68,7 @@ const Bounty = () => {
       setAction({
         title: data.title,
         description: data.description,
-        image: "https://ipfs.io/ipfs/" + a.image,
+        image: toIPFSUrl(a.image),
         amount: ethers.utils.formatEther(a.amount),
         eligibleSubmittersCount: a.eligibleSubmittersCount.toString(),
         status: a.settled
@@ -85,7 +84,6 @@ const Bounty = () => {
     });
 
     getSubmissions(currentId).then((s) => {
-      console.log("subs", s);
       setSubmissions(s);
     });
   }, [id]);
@@ -283,7 +281,7 @@ const Bounty = () => {
                         {truncateWallet(s.submitter, 15)}
                       </Td>
                       <Td color={"#598CF4"}>
-                        <Link>{s.proof}</Link>
+                        <Link target="_blank" href={toIPFSUrl(s.proof)}>{s.proof}</Link>
                       </Td>
                       <Td isNumeric>
                         <OpenDispute />
