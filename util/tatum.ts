@@ -1,8 +1,8 @@
 import axios from "axios";
 import { ethers } from "ethers";
 import tatum from "@tatumio/tatum";
+import { ACTIONS_CONTRACT_ADDRESS } from "./constants";
 const API_KEY = "f0f95c56-c616-4326-b0b9-d3715ed8233e";
-const PARENT_CONTRACT_ADDRESS = "0xFf876C477C0F2BD05a23326AdC08720CaBaeAf91";
 export async function callSmartContractFunction( //would also call withdraw function from smart contract etc
   methodName: string,
   methodABI: object,
@@ -12,7 +12,7 @@ export async function callSmartContractFunction( //would also call withdraw func
 ) {
   console.log("budj", ethers.utils.parseEther(amount).toString());
   const data = {
-    contractAddress: PARENT_CONTRACT_ADDRESS,
+    contractAddress: ACTIONS_CONTRACT_ADDRESS,
     methodName: methodName,
     methodABI: methodABI,
     params: params,

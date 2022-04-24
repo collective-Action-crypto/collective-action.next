@@ -1,5 +1,5 @@
-import React, {createContext, useEffect, useState} from 'react';
-import { getTokenBalance } from '../util/ethers';
+import React, { createContext, useEffect, useState } from "react";
+import { getTokenBalance } from "../util/ethers";
 
 // undefined as | undefined | { partnersAgreementKey: { communityAddress: string } }
 export const AuthContext = createContext({});
@@ -10,21 +10,20 @@ export const AuthContextProvider = ({ children }) => {
   const [tokenBalance, setTokenBalance] = useState(0);
 
   useEffect(() => {
-    if(currentUser) {
-      debugger;
+    if (currentUser) {
       setAuthLoading(true);
       getTokenBalance(currentUser.address)
-        .then(response => {
+        .then((response) => {
           const balance = parseInt(response.toString());
           setTokenBalance(balance);
           setAuthLoading(false);
         })
-        .catch(error => {
+        .catch((error) => {
           console.warn(error);
           setAuthLoading(false);
         });
     }
-  }, [currentUser])
+  }, [currentUser]);
 
   return (
     <AuthContext.Provider
@@ -34,9 +33,10 @@ export const AuthContextProvider = ({ children }) => {
         currentUser,
         setCurrentUser,
         tokenBalance,
-        setTokenBalance
-      }}>
+        setTokenBalance,
+      }}
+    >
       {children}
     </AuthContext.Provider>
-  )
-}
+  );
+};

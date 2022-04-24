@@ -24,10 +24,10 @@ import { AuthContext } from "../contexts/AuthContext";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
 
-const STAKE_AMOUNT = "0.1";
+const STAKE_AMOUNT = "0.01";
 function CreateBounty() {
   const currentUser = useContext(AuthContext);
-  console.log("fnr", process.env.STAKE_AMOUNT);
+  console.log("fnr", currentUser);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const inputFile = useRef(null as HTMLInputElement | null);
   const [image, setImage] = useState(undefined as string | undefined);
@@ -80,26 +80,26 @@ function CreateBounty() {
           requirements: values.requirements,
         })
       );
-    const imageCid = await pushToIPFS(await loadFile(image as string));
-    await callSmartContractFunction(
-      "createAction",
-      createABI,
-      //Actions.abi,
-      [
-        (date.getTime() / 1000).toString(),
-        ethers.utils.parseEther(STAKE_AMOUNT).toString(),
-        imageCid,
-        textCid,
-      ],
-      values.prizePoolSize,
-      (currentUser.currentUser as any).privateKey
-    );
+      const imageCid = await pushToIPFS(await loadFile(image as string));
+      await callSmartContractFunction(
+        "createAction",
+        createABI,
+        //Actions.abi,
+        [
+          (date.getTime() / 1000).toString(),
+          ethers.utils.parseEther(STAKE_AMOUNT).toString(),
+          imageCid,
+          textCid,
+        ],
+        values.prizePoolSize,
+        (currentUser.currentUser as any).privateKey
+      );
 
-      toast.success('Dispute created successfully');
+      toast.success("Dispute created successfully");
       onClose();
       setLoading(false);
-    } catch(err) {
-      toast.error('Error creating dispute');
+    } catch (err) {
+      toast.error("Error creating dispute");
       setLoading(false);
     }
   };
@@ -196,7 +196,9 @@ function CreateBounty() {
                         />
                         {/*<Input {...field} id="image" placeholder="Image" />*/}
                         <Button
-                           onClick={(e) => (inputFile.current as HTMLInputElement).click()}
+                          onClick={(e) =>
+                            (inputFile.current as HTMLInputElement).click()
+                          }
                         >
                           Upload
                         </Button>

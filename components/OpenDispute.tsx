@@ -12,7 +12,7 @@ import {
   useColorModePreference,
   Text,
   Box,
-  Textarea
+  Textarea,
 } from "@chakra-ui/react";
 import Datepicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -26,7 +26,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
 
-const STAKE_AMOUNT = "0.1";
+const STAKE_AMOUNT = "0.01";
 function OpenDispute() {
   const currentUser = useContext(AuthContext);
   console.log("fnr", process.env.STAKE_AMOUNT);
@@ -74,14 +74,14 @@ function OpenDispute() {
   const handleSubmit = async (values) => {
     setLoading(true);
     try {
-      toast.success('Dispute created successfully');
+      toast.success("Dispute created successfully");
       onClose();
       setLoading(false);
-    } catch(err) {
-      toast.error('Error creating dispute');
+    } catch (err) {
+      toast.error("Error creating dispute");
       setLoading(false);
     }
-    console.log('Submit Claim');
+    console.log("Submit Claim");
     // const textCid = await pushToIPFS(
     //   await createBlobFromObject({
     //     title: values.title,
@@ -111,7 +111,16 @@ function OpenDispute() {
   };
   return (
     <>
-      <Button fontWeight="500" fontSize="14px" lineHeight="17px" borderRadius="16px"  variant='ghost' onClick={onOpen}>Open Dispute</Button>
+      <Button
+        fontWeight="500"
+        fontSize="14px"
+        lineHeight="17px"
+        borderRadius="16px"
+        variant="ghost"
+        onClick={onOpen}
+      >
+        Open Dispute
+      </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -134,11 +143,21 @@ function OpenDispute() {
                   <Field name="description" validate={validateName}>
                     {({ field, form }) => (
                       <FormControl
-                        isInvalid={form.errors.description && form.touched.description}
+                        isInvalid={
+                          form.errors.description && form.touched.description
+                        }
                       >
-                        <FormLabel htmlFor="description">Dispute Description</FormLabel>
-                        <Textarea {...field} id="description" placeholder="Description" />
-                        <FormErrorMessage>{form.errors.description}</FormErrorMessage>
+                        <FormLabel htmlFor="description">
+                          Dispute Description
+                        </FormLabel>
+                        <Textarea
+                          {...field}
+                          id="description"
+                          placeholder="Description"
+                        />
+                        <FormErrorMessage>
+                          {form.errors.description}
+                        </FormErrorMessage>
                       </FormControl>
                     )}
                   </Field>
@@ -160,7 +179,9 @@ function OpenDispute() {
                         />
                         {/*<Input {...field} id="image" placeholder="Image" />*/}
                         <Button
-                           onClick={(e) => (inputFile.current as HTMLInputElement).click()}
+                          onClick={(e) =>
+                            (inputFile.current as HTMLInputElement).click()
+                          }
                         >
                           Upload
                         </Button>
