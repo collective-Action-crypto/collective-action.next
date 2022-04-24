@@ -53,6 +53,7 @@ const Dispute: NextPage = () => {
   const [disputes, setDisputes] = useState(undefined as dispute[] | undefined);
 
   useEffect(() => {
+    if(!currentUser) return;
     getListOfDisputes(
       currentUser && (currentUser as any).address
     ).then((disputes) => {
@@ -61,7 +62,7 @@ const Dispute: NextPage = () => {
     }).catch(err => {
       throw Error('Error getting disputes');
     });
-  }, []);
+  }, [currentUser]);
 
   if (!loading) {
     return (
