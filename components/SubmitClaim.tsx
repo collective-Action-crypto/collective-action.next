@@ -27,7 +27,7 @@ import { ethers } from "ethers";
 import { contract } from "../util/ethers";
 import { toast } from "react-toastify";
 
-const STAKE_AMOUNT = "0.1";
+const STAKE_AMOUNT = "0.01";
 const claim_Abi = {
   inputs: [
     {
@@ -72,14 +72,14 @@ function SubmitClaim({ id }) {
         "submitProof",
         claim_Abi,
         [id, imageCid],
-        "0.1",
+        "0.01",
         (currentUser.currentUser as any).privateKey
       );
-      toast.success('Dispute created successfully');
+      toast.success("Dispute created successfully");
       setLoading(false);
       onClose();
-    } catch(err) {
-      toast.error('Error creating dispute');
+    } catch (err) {
+      toast.error("Error creating dispute");
       setLoading(false);
     }
   };
@@ -139,7 +139,9 @@ function SubmitClaim({ id }) {
                         />
                         {/*<Input {...field} id="image" placeholder="Image" />*/}
                         <Button
-                          onClick={(e) => (inputFile.current as HTMLInputElement).click()}
+                          onClick={(e) =>
+                            (inputFile.current as HTMLInputElement).click()
+                          }
                         >
                           Upload
                         </Button>

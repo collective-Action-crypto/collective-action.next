@@ -12,7 +12,7 @@ import {
   useColorModePreference,
   Text,
   Box,
-  Textarea
+  Textarea,
 } from "@chakra-ui/react";
 import Datepicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -26,7 +26,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
 
-const STAKE_AMOUNT = "0.1";
+const STAKE_AMOUNT = "0.01";
 function OpenDispute({ id, proofIndex }) {
   const currentUser = useContext(AuthContext);
   console.log("fnr", process.env.STAKE_AMOUNT);
@@ -53,38 +53,16 @@ function OpenDispute({ id, proofIndex }) {
         "openDispute",
         Actions.abi.filter(el => el.name === "openDispute")[0],
         [id, proofIndex, imageCid],
-        "0.1",
+        STAKE_AMOUNT,
         (currentUser.currentUser as any).privateKey
       );
       toast.success('Dispute created successfully');
       onClose();
       setLoading(false);
-    } catch(err) {
-      toast.error('Error creating dispute');
+    } catch (err) {
+      toast.error("Error creating dispute");
       setLoading(false);
     }
-    console.log('Submit Claim');
-    // const textCid = await pushToIPFS(
-    //   await createBlobFromObject({
-    //     title: values.title,
-    //     description: values.description,
-    //     requirements: values.requirements,
-    //   })
-    // );
-    // const imageCid = await pushToIPFS(await loadFile(image as string));
-    // callSmartContractFunction(
-    //   "createAction",
-    //   createABI,
-    //   //Actions.abi,
-    //   [
-    //     (date.getTime() / 1000).toString(),
-    //     ethers.utils.parseEther(STAKE_AMOUNT).toString(),
-    //     imageCid,
-    //     textCid,
-    //   ],
-    //   values.prizePoolSize,
-    //   (currentUser.currentUser as any).privateKey
-    // );
   };
   const onImageChange = (event: any) => {
     if (event.target.files && event.target.files[0]) {
@@ -93,7 +71,16 @@ function OpenDispute({ id, proofIndex }) {
   };
   return (
     <>
-      <Button fontWeight="500" fontSize="14px" lineHeight="17px" borderRadius="16px"  variant='ghost' onClick={onOpen}>Open Dispute</Button>
+      <Button
+        fontWeight="500"
+        fontSize="14px"
+        lineHeight="17px"
+        borderRadius="16px"
+        variant="ghost"
+        onClick={onOpen}
+      >
+        Open Dispute
+      </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -129,7 +116,9 @@ function OpenDispute({ id, proofIndex }) {
                         />
                         {/*<Input {...field} id="image" placeholder="Image" />*/}
                         <Button
-                           onClick={(e) => (inputFile.current as HTMLInputElement).click()}
+                          onClick={(e) =>
+                            (inputFile.current as HTMLInputElement).click()
+                          }
                         >
                           Upload
                         </Button>

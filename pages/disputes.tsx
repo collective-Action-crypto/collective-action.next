@@ -22,7 +22,30 @@ import colors from "../theme/colors";
 import { dispute } from "../util/helper";
 import { getListOfDisputes } from "../util/ethers";
 import { AuthContext } from "../contexts/AuthContext";
-
+import { callSmartContractFunction } from "../util/tatum";
+const vote_abi = {
+  inputs: [
+    {
+      internalType: "uint256",
+      name: "actionId",
+      type: "uint256",
+    },
+    {
+      internalType: "uint256",
+      name: "disputeId",
+      type: "uint256",
+    },
+    {
+      internalType: "bool",
+      name: "voteFor",
+      type: "bool",
+    },
+  ],
+  name: "vote",
+  outputs: [],
+  stateMutability: "nonpayable",
+  type: "function",
+};
 const Dispute: NextPage = () => {
   const currentUser = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
@@ -113,7 +136,19 @@ const Dispute: NextPage = () => {
                               lineHeight="17px"
                               borderRadius="16px"
                               variant="ghost"
-                              onClick={() => console.log("Suport Submitter")}
+                              onClick={() =>
+                                callSmartContractFunction(
+                                  "vote",
+                                  vote_abi,
+                                  [
+                                    dispute.action.toString(),
+                                    dispute.disputeId.toString(),
+                                    "false",
+                                  ],
+                                  "0",
+                                  (currentUser.currentUser as any).privateKey
+                                )
+                              }
                             >
                               Submitter
                             </Button>
@@ -123,7 +158,19 @@ const Dispute: NextPage = () => {
                               lineHeight="17px"
                               borderRadius="16px"
                               variant="ghost"
-                              onClick={() => console.log("Support Disputer")}
+                              onClick={() =>
+                                callSmartContractFunction(
+                                  "vote",
+                                  vote_abi,
+                                  [
+                                    dispute.action.toString(),
+                                    dispute.disputeId.toString(),
+                                    "true",
+                                  ],
+                                  "0",
+                                  (currentUser.currentUser as any).privateKey
+                                )
+                              }
                             >
                               Disputer
                             </Button>

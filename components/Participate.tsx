@@ -26,7 +26,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
 
-const STAKE_AMOUNT = "0.1";
+const STAKE_AMOUNT = "0.01";
 const contribute_ABI = {
   inputs: [
     {

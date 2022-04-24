@@ -31,6 +31,7 @@ export interface action {
 }
 export interface dispute {
   action: number;
+  disputeId: number;
   creator: string;
   forProof: string;
   againstVotes: number;

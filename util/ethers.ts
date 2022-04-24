@@ -78,6 +78,7 @@ export async function getListOfDisputes(address: string | undefined) {
         : false;
       disputes.push({
         action: action,
+        disputeId: dispute,
         creator: tmpDispute.creator,
         forProof: proof.proof,
         againstVotes: tmpDispute.againstVotes,
