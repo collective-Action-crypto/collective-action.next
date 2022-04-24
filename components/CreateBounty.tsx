@@ -26,8 +26,7 @@ import { toast } from "react-toastify";
 
 const STAKE_AMOUNT = "0.01";
 function CreateBounty() {
-  const currentUser = useContext(AuthContext);
-  console.log("fnr", currentUser);
+  const { currentUser } = useContext(AuthContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const inputFile = useRef(null as HTMLInputElement | null);
   const [image, setImage] = useState(undefined as string | undefined);
@@ -70,7 +69,7 @@ function CreateBounty() {
     type: "function",
   };
 
-  const handleSubmit = async (values) => {
+  const submit = async () => {
     setLoading(true);
     try {
       const textCid = await pushToIPFS(
@@ -92,16 +91,23 @@ function CreateBounty() {
           textCid,
         ],
         values.prizePoolSize,
-        (currentUser.currentUser as any).privateKey
+        (currentUser as any).privateKey
       );
 
-      toast.success("Dispute created successfully");
       onClose();
       setLoading(false);
     } catch (err) {
-      toast.error("Error creating dispute");
       setLoading(false);
+      throw Error('Error');
     }
+  }
+
+  const handleSubmit = async (values) => {
+    toast.promise(submit, {
+      pending: "Interacting with contract",
+      success: "Success!",
+      error: "Error",
+    });
   };
   const onImageChange = (event: any) => {
     if (event.target.files && event.target.files[0]) {

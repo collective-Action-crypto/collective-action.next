@@ -41,8 +41,7 @@ const contribute_ABI = {
   type: "function",
 };
 function Participate(props: { id: string }) {
-  const currentUser = useContext(AuthContext);
-  console.log("fnr", process.env.STAKE_AMOUNT);
+  const { currentUser } = useContext(AuthContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const inputFile = useRef(null as HTMLInputElement | null);
   const [image, setImage] = useState(undefined as string | undefined);
@@ -56,41 +55,31 @@ function Participate(props: { id: string }) {
     }
     return error;
   }
-  const handleSubmit = async (values) => {
-    console.log("in4fn", values);
+
+  const submit = async () => {
+    setLoading(true);
     try {
-      callSmartContractFunction(
+      await callSmartContractFunction(
         "contribute",
         contribute_ABI,
         [props.id],
         values.amount,
         (currentUser.currentUser as any).privateKey
       );
-      toast.success("Contributed successfully");
+      onClose();
+      setLoading(false);
     } catch (err) {
-      toast.error("Error creating dispute");
+      setLoading(false);
+      throw Error('Error');
     }
-    // const textCid = await pushToIPFS(
-    //   await createBlobFromObject({
-    //     title: values.title,
-    //     description: values.description,
-    //     requirements: values.requirements,
-    //   })
-    // );
-    // const imageCid = await pushToIPFS(await loadFile(image as string));
-    // callSmartContractFunction(
-    //   "createAction",
-    //   createABI,
-    //   //Actions.abi,
-    //   [
-    //     (date.getTime() / 1000).toString(),
-    //     ethers.utils.parseEther(STAKE_AMOUNT).toString(),
-    //     imageCid,
-    //     textCid,
-    //   ],
-    //   values.prizePoolSize,
-    //   (currentUser.currentUser as any).privateKey
-    // );
+  }
+
+  const handleSubmit = async (values) => {
+    toast.promise(submit, {
+      pending: "Interacting with contract",
+      success: "Success!",
+      error: "Error",
+    });
   };
   const onImageChange = (event: any) => {
     if (event.target.files && event.target.files[0]) {

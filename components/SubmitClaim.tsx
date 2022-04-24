@@ -47,8 +47,7 @@ const claim_Abi = {
   type: "function",
 };
 function SubmitClaim({ id }) {
-  const currentUser = useContext(AuthContext);
-  console.log("fnr", process.env.STAKE_AMOUNT);
+  const { currentUser } = useContext(AuthContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const inputFile = useRef(null as HTMLInputElement | null);
   const [image, setImage] = useState(undefined as string | undefined);
@@ -62,7 +61,7 @@ function SubmitClaim({ id }) {
     return error;
   }
 
-  const handleSubmit = async (values) => {
+  const submit = async () => {
     setLoading(true);
     try {
       const imageCid = await pushToIPFS(await loadFile(image as string));
@@ -73,15 +72,22 @@ function SubmitClaim({ id }) {
         claim_Abi,
         [id, imageCid],
         "0.01",
-        (currentUser.currentUser as any).privateKey
+        (currentUser as any).privateKey
       );
-      toast.success("Dispute created successfully");
       setLoading(false);
       onClose();
     } catch (err) {
-      toast.error("Error creating dispute");
       setLoading(false);
+      throw Error('Error');
     }
+  }
+
+  const handleSubmit = async (values) => {
+    toast.promise(submit, {
+      pending: "Interacting with contract",
+      success: "Success!",
+      error: "Error",
+    });
   };
 
   const onImageChange = (event: any) => {

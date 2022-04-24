@@ -47,15 +47,14 @@ const vote_abi = {
   type: "function",
 };
 const Dispute: NextPage = () => {
-  const currentUser = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const [disputes, setDisputes] = useState(undefined as dispute[] | undefined);
 
   useEffect(() => {
     getListOfDisputes(
-      currentUser.currentUser && (currentUser.currentUser as any).address
+      currentUser && (currentUser as any).address
     ).then((disputes) => {
-      debugger;
       setDisputes(disputes as dispute[]);
       setLoading(false);
     }).catch(err => {
@@ -113,7 +112,7 @@ const Dispute: NextPage = () => {
               </Thead>
               <Tbody>
                 {disputes
-                  ? disputes.map((dispute, index) => {
+                  ? disputes.map((dispute, index) => {  
                     return (
                       <Tr key={index}>
                         <Td fontWeight="400" fontSize="14px" lineHeight="17px">
@@ -128,7 +127,7 @@ const Dispute: NextPage = () => {
                         <Td color={"#598CF4"}>
                           <a target="_blank" href={`https://ipfs.io/ipfs/${dispute.disputeProof}`} rel="noopener noreferrer">View Proof</a>
                         </Td>
-                        {dispute.alreadyVoted && currentUser.currentUser ? (
+                        {!dispute.alreadyVoted && currentUser.currentUser ? (
                           <Td isNumeric>
                             <Button
                               fontWeight="500"
