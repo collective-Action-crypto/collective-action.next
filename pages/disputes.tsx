@@ -54,15 +54,16 @@ const Dispute: NextPage = () => {
   useEffect(() => {
     getListOfDisputes(
       currentUser.currentUser && (currentUser.currentUser as any).address
-    ).then((disputes) => {
-      debugger;
-      setDisputes(disputes as dispute[]);
-      setLoading(false);
-    }).catch(err => {
-      debugger;
-    });
+    )
+      .then((disputes) => {
+        debugger;
+        setDisputes(disputes as dispute[]);
+        setLoading(false);
+      })
+      .catch((err) => {
+        debugger;
+      });
   }, []);
-
   if (!loading) {
     return (
       <>
@@ -114,80 +115,100 @@ const Dispute: NextPage = () => {
               <Tbody>
                 {disputes
                   ? disputes.map((dispute, index) => {
-                    return (
-                      <Tr key={index}>
-                        <Td fontWeight="400" fontSize="14px" lineHeight="17px">
-                          {index}
-                        </Td>
-                        <Td fontWeight="400" fontSize="14px" lineHeight="17px">
-                          {dispute.creator}
-                        </Td>
-                        <Td color={"#598CF4"}>
-                          <a target="_blank" href={`https://ipfs.io/ipfs/${dispute.forProof}`} rel="noopener noreferrer">View Proof</a>
-                        </Td>
-                        <Td color={"#598CF4"}>
-                          <a target="_blank" href={`https://ipfs.io/ipfs/${dispute.disputeProof}`} rel="noopener noreferrer">View Proof</a>
-                        </Td>
-                        {dispute.alreadyVoted && currentUser.currentUser ? (
-                          <Td isNumeric>
-                            <Button
-                              fontWeight="500"
-                              fontSize="14px"
-                              lineHeight="17px"
-                              borderRadius="16px"
-                              variant="ghost"
-                              onClick={() =>
-                                callSmartContractFunction(
-                                  "vote",
-                                  vote_abi,
-                                  [
-                                    dispute.action.toString(),
-                                    dispute.disputeId.toString(),
-                                    "false",
-                                  ],
-                                  "0",
-                                  (currentUser.currentUser as any).privateKey
-                                )
-                              }
-                            >
-                              Submitter
-                            </Button>
-                            <Button
-                              fontWeight="500"
-                              fontSize="14px"
-                              lineHeight="17px"
-                              borderRadius="16px"
-                              variant="ghost"
-                              onClick={() =>
-                                callSmartContractFunction(
-                                  "vote",
-                                  vote_abi,
-                                  [
-                                    dispute.action.toString(),
-                                    dispute.disputeId.toString(),
-                                    "true",
-                                  ],
-                                  "0",
-                                  (currentUser.currentUser as any).privateKey
-                                )
-                              }
-                            >
-                              Disputer
-                            </Button>
-                          </Td>
-                        ) : (
+                      return (
+                        <Tr key={index}>
                           <Td
                             fontWeight="400"
                             fontSize="14px"
                             lineHeight="17px"
-                            isNumeric
                           >
-                            {`${dispute.forVotes.toString()} (Submitter) : ${dispute.againstVotes.toString()} (Disputer)`}
+                            {index}
                           </Td>
-                        )}
-                      </Tr>
-                    )
-                  })
+                          <Td
+                            fontWeight="400"
+                            fontSize="14px"
+                            lineHeight="17px"
+                          >
+                            {dispute.creator}
+                          </Td>
+                          <Td color={"#598CF4"}>
+                            <a
+                              target="_blank"
+                              href={`https://ipfs.io/ipfs/${dispute.forProof}`}
+                              rel="noopener noreferrer"
+                            >
+                              View Proof
+                            </a>
+                          </Td>
+                          <Td color={"#598CF4"}>
+                            <a
+                              target="_blank"
+                              href={`https://ipfs.io/ipfs/${dispute.disputeProof}`}
+                              rel="noopener noreferrer"
+                            >
+                              View Proof
+                            </a>
+                          </Td>
+                          {!dispute.alreadyVoted && currentUser.currentUser ? (
+                            <Td isNumeric>
+                              <Button
+                                fontWeight="500"
+                                fontSize="14px"
+                                lineHeight="17px"
+                                borderRadius="16px"
+                                variant="ghost"
+                                onClick={() =>
+                                  callSmartContractFunction(
+                                    "vote",
+                                    vote_abi,
+                                    [
+                                      dispute.action.toString(),
+                                      dispute.disputeId.toString(),
+                                      "false",
+                                    ],
+                                    "0",
+                                    (currentUser.currentUser as any).privateKey
+                                  )
+                                }
+                              >
+                                Submitter
+                              </Button>
+                              <Button
+                                fontWeight="500"
+                                fontSize="14px"
+                                lineHeight="17px"
+                                borderRadius="16px"
+                                variant="ghost"
+                                onClick={() =>
+                                  callSmartContractFunction(
+                                    "vote",
+                                    vote_abi,
+                                    [
+                                      dispute.action.toString(),
+                                      dispute.disputeId.toString(),
+                                      "true",
+                                    ],
+                                    "0",
+                                    (currentUser.currentUser as any).privateKey
+                                  )
+                                }
+                              >
+                                Disputer
+                              </Button>
+                            </Td>
+                          ) : (
+                            <Td
+                              fontWeight="400"
+                              fontSize="14px"
+                              lineHeight="17px"
+                              isNumeric
+                            >
+                              {`${dispute.forVotes.toString()} (Submitter) : ${dispute.againstVotes.toString()} (Disputer)`}
+                            </Td>
+                          )}
+                        </Tr>
+                      );
+                    })
                   : null}
               </Tbody>
             </Table>
